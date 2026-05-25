@@ -14,6 +14,7 @@
       --glow-card-b: 0.12;
       --card-radius: 28px;
       --thumb-radius: 20px;
+      --game-thumb-height: 172px;
       scrollbar-color: rgba(var(--accent-a), 0.75) rgba(5,7,11,0.85);
       scrollbar-width: thin;
     }
@@ -392,7 +393,7 @@
 
     .home-search-item {
       display: grid;
-      grid-template-columns: 42px 1fr auto;
+      grid-template-columns: 42px 1fr;
       gap: 12px;
       align-items: center;
       width: 100%;
@@ -452,17 +453,6 @@
       color: rgba(255,255,255,0.52);
       font-size: 0.82rem;
       line-height: 1.45;
-    }
-
-    .home-search-badge {
-      padding: 6px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(var(--accent-c),0.18);
-      background: rgba(var(--accent-c),0.1);
-      color: rgb(var(--accent-c));
-      font-size: 0.65rem;
-      font-weight: 800;
-      white-space: nowrap;
     }
 
     .home-search-empty {
@@ -565,7 +555,7 @@
 
     .game-thumb {
       width: 100%;
-      aspect-ratio: 4 / 3;
+      height: var(--game-thumb-height);
       flex-shrink: 0;
       border-radius: var(--thumb-radius);
       background:
@@ -587,10 +577,8 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
-      padding: 14px;
-      box-sizing: border-box;
     }
 
     .game-thumb::after {
@@ -619,20 +607,6 @@
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
       overflow: hidden;
-    }
-
-    .badge {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: rgba(var(--accent-c),0.12);
-      border: 1px solid rgba(var(--accent-c),0.18);
-      color: rgb(var(--accent-c));
-      z-index: 3;
     }
 
     .game-page {
@@ -682,21 +656,6 @@
       display: block;
       padding: 8px;
       box-sizing: border-box;
-    }
-
-    .game-kicker {
-      display: inline-flex;
-      width: fit-content;
-      margin-bottom: 10px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(var(--accent-c),0.18);
-      background: rgba(var(--accent-c),0.1);
-      color: rgb(var(--accent-c));
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
     }
 
     .game-detail-copy h2 {
@@ -896,13 +855,12 @@
       padding: 18px;
     }
 
-    body.compact-cards .game-thumb {
-      aspect-ratio: 4 / 3;
-      margin-bottom: 16px;
+    body.compact-cards {
+      --game-thumb-height: 128px;
     }
 
-    body.compact-cards .game-thumb img {
-      padding: 10px;
+    body.compact-cards .game-thumb {
+      margin-bottom: 16px;
     }
 
     body.high-contrast .game-card,
@@ -1403,10 +1361,6 @@
       }
       .home-search-item {
         grid-template-columns: 38px 1fr;
-      }
-      .home-search-badge {
-        grid-column: 2;
-        justify-self: start;
       }
     }
 

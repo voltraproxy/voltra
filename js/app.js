@@ -134,7 +134,7 @@
     requestAnimationFrame(syncLayout);
 
     const cookieIcon = "https://outred.org/g/assets/cookie-clicker/cookie1.jpeg";
-    const cookieUrl = "https://sitetitan.org/main/cookieclicker/";
+    const cookieUrl = "https://cookieclickernew.com";
 
     const sectionData = {
       games: [
@@ -256,7 +256,6 @@
 
         return `
           <div class="game-card" ${playableAttrs}>
-            <div class="badge">${escapeHTML(item.badge)}</div>
             <div class="game-thumb">${buildThumb(item)}</div>
             <h3>${escapeHTML(item.title)}</h3>
             <p>${escapeHTML(item.desc)}</p>
@@ -293,7 +292,6 @@
                   <img src="${escapeHTML(game.image)}" alt="${escapeHTML(game.title)} icon">
                 </div>
                 <div>
-                  <div class="game-kicker">${escapeHTML(game.badge)}</div>
                   <h2>${escapeHTML(game.title)}</h2>
                   <p>${escapeHTML(game.desc)}</p>
                 </div>
@@ -677,7 +675,6 @@
                     <strong>${escapeHTML(item.title)}</strong>
                     <p>${escapeHTML(item.desc)}</p>
                   </div>
-                  <div class="home-search-badge">${escapeHTML(item.badge)}</div>
                 </button>
               `).join('')}
             </div>
@@ -715,7 +712,6 @@
           .filter(i => i.title.toLowerCase().includes(query.toLowerCase()));
         grid.innerHTML = items.map(item => `
           <div class="game-card" ${item.url ? `role="button" tabindex="0" onclick="openGame('${item.id}')" onkeydown="handleCardKey(event, '${item.id}')"` : ''}>
-            <div class="badge">${escapeHTML(item.badge)}</div>
             <div class="game-thumb">${buildThumb(item)}</div>
             <h3>${escapeHTML(item.title)}</h3>
             <p>${escapeHTML(item.desc)}</p>
