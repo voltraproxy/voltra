@@ -259,10 +259,62 @@
         }
       ],
       proxies: [
-        { title: "Proxy Browser", desc: "Private browsing tool for fast web access.", badge: "APP", emoji: "🛠️" },
-        { title: "Nebula Gateway", desc: "A clean proxy launcher built for quick sessions.", badge: "FAST", emoji: "🌐" },
-        { title: "Mirror Link", desc: "Backup access point for supported web apps.", badge: "ALT", emoji: "🔗" },
-        { title: "Cloud Route", desc: "Lightweight browsing path with a minimal interface.", badge: "NEW", emoji: "☁️" }
+        {
+          id: "gust-proxy",
+          title: "Gust Proxy",
+          desc: "GUST is a sleek, customizable web proxy you download and run on any device—grab your build, follow the simple setup steps, and browse through your own local proxy in minutes.",
+          badge: "PROXY",
+          emoji: "🌬️",
+          image: "https://i.ibb.co/nWvykJ1/image.png",
+          url: "https://gust-browser.vercel.app"
+        },
+        {
+          id: "daydreamx",
+          title: "DayDreamX",
+          desc: "A clean browser proxy with a fast, minimal interface for everyday unblocked browsing and quick access to the open web.",
+          badge: "PROXY",
+          emoji: "💭",
+          image: "https://i.ibb.co/TBSbSVsN/image.png",
+          url: "https://thinking.rymconstrucciones.cl",
+          embeddable: false
+        },
+        {
+          id: "reds-exploit-center",
+          title: "Reds Exploit Center",
+          desc: "A hub-style proxy that bundles games, apps, and media tools together for simple one-stop browsing sessions.",
+          badge: "PROXY",
+          emoji: "🔴",
+          image: "https://static.thenounproject.com/png/404950-200.png",
+          url: "https://55gms.com"
+        },
+        {
+          id: "space-unblocker",
+          title: "Space Unblocker",
+          desc: "A lightweight space-themed web proxy built for smooth browsing, quick navigation, and reliable unblocked access.",
+          badge: "PROXY",
+          emoji: "🚀",
+          image: "https://i.ibb.co/XxKbcnzM/image.png",
+          url: "https://blog.free-dyndns.org/&"
+        },
+        {
+          id: "petezah",
+          title: "PeteZah",
+          desc: "A streamlined proxy front-end with a clean layout and dependable access when you need sites unblocked fast.",
+          badge: "PROXY",
+          emoji: "⚡",
+          image: "https://i.ibb.co/mrW4n2qm/image.png",
+          url: "https://cdn.jsdelivr.net/gh/PeteZah-G/copy-2/main.svg"
+        },
+        {
+          id: "rosin-unblocker",
+          title: "Rosin Unblocker",
+          desc: "A straightforward unblocker proxy focused on quick launches, simple controls, and hassle-free browsing.",
+          badge: "PROXY",
+          emoji: "🟣",
+          image: "https://i.ibb.co/S4gbMYxH/image-2026-05-25-165712219.png",
+          url: "https://sosa.centromariapolis.cl",
+          embeddable: false
+        }
       ],
       tools: [
         { title: "File Hub", desc: "Cloud file launcher.", badge: "NEW", emoji: "📁" },
@@ -273,6 +325,7 @@
     };
 
     const gameIndex = Object.fromEntries(sectionData.games.map(game => [game.id, game]));
+    const proxyIndex = Object.fromEntries(sectionData.proxies.map(proxy => [proxy.id, proxy]));
 
     const suggestionData = [
       { title: "Clicker Picks", desc: "More fast idle games and clicker loops will appear here as the library expands.", badge: "SOON", emoji: "⚡" },
@@ -294,6 +347,9 @@
       info: { label: "Info", items: infoSearchData }
     };
 
+    const SETTINGS_STORAGE_KEY = 'voltra-settings-v1';
+    const BASE_PAGE_TITLE = 'Voltra Proxy';
+
     const defaultSettings = {
       music: true,
       sfx: true,
@@ -306,10 +362,150 @@
       accent: 'aurora',
       compactCards: false,
       highContrast: false,
-      sectionSearch: true
+      sectionSearch: true,
+      backgroundOrbs: true,
+      smoothScroll: true,
+      showPlayerSuggestions: true,
+      tabCloak: false,
+      autoTabCloak: true,
+      cloakPreset: 'google',
+      cloakCustomTitle: '',
+      autoExternalLaunch: false,
+      autoLaunchMode: 'aboutBlank'
     };
 
     const settings = { ...defaultSettings };
+    let settingsPanel = 'audio';
+
+    const cloakPresets = {
+      google: { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
+      classroom: { title: 'Google Classroom', icon: 'https://ssl.gstatic.com/classroom/favicon.png' },
+      drive: { title: 'Google Drive', icon: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico' },
+      docs: { title: 'Google Docs', icon: 'https://docs.google.com/favicon.ico' },
+      home: { title: 'Home', icon: 'https://www.google.com/favicon.ico' }
+    };
+
+    function loadStoredSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+        if (!raw) return;
+        const stored = JSON.parse(raw);
+        Object.keys(defaultSettings).forEach(key => {
+          if (stored[key] !== undefined) settings[key] = stored[key];
+        });
+        if (stored.settingsPanel) settingsPanel = stored.settingsPanel;
+      } catch (err) {
+        console.warn('Could not load saved settings.', err);
+      }
+    }
+
+    function saveStoredSettings() {
+      try {
+        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({
+          ...settings,
+          settingsPanel
+        }));
+      } catch (err) {
+        console.warn('Could not save settings.', err);
+      }
+    }
+
+    function setPageFavicon(href) {
+      let link = document.querySelector('link[rel="icon"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = href;
+    }
+
+    function restoreTabIdentity() {
+      document.title = BASE_PAGE_TITLE;
+      setPageFavicon('data:,');
+    }
+
+    function applyTabCloak() {
+      if (!settings.tabCloak) {
+        restoreTabIdentity();
+        return;
+      }
+
+      const preset = cloakPresets[settings.cloakPreset] || cloakPresets.google;
+      document.title = settings.cloakCustomTitle.trim() || preset.title;
+      setPageFavicon(preset.icon);
+    }
+
+    function updateTabCloakState() {
+      const onPlayer = currentSection === 'game' || currentSection === 'proxy';
+
+      if (!settings.tabCloak) {
+        restoreTabIdentity();
+        return;
+      }
+
+      if (settings.autoTabCloak) {
+        if (onPlayer) applyTabCloak();
+        else restoreTabIdentity();
+        return;
+      }
+
+      applyTabCloak();
+    }
+
+    function buildEmbeddedTabHTML(url, title) {
+      const src = encodeURI(url);
+      const safeTitle = escapeHTML(title);
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${safeTitle}</title>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #020409; }
+    iframe { border: 0; width: 100%; height: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <iframe src="${src}" title="${safeTitle}" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+</body>
+</html>`;
+    }
+
+    function openUrlInAboutBlank(url, title) {
+      const tab = window.open('about:blank', '_blank');
+      if (!tab) return null;
+
+      tab.opener = null;
+      tab.document.open();
+      tab.document.write(buildEmbeddedTabHTML(url, title));
+      tab.document.close();
+      return tab;
+    }
+
+    function openUrlInBlobTab(url, title) {
+      const html = buildEmbeddedTabHTML(url, title);
+      const blob = new Blob([html], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      const tab = window.open(blobUrl, '_blank');
+
+      if (tab) tab.opener = null;
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
+      return tab;
+    }
+
+    function launchExternalTab(url, title, mode) {
+      if (mode === 'blob') return openUrlInBlobTab(url, title);
+      return openUrlInAboutBlank(url, title);
+    }
+
+    function maybeAutoLaunchExternal(url, title) {
+      if (!settings.autoExternalLaunch || !url) return;
+      launchExternalTab(url, title, settings.autoLaunchMode);
+    }
+
+    loadStoredSettings();
 
     const accentThemes = {
       aurora: { a: '125,211,252', b: '192,132,252', c: '0,255,170' },
@@ -325,6 +521,12 @@
     };
 
     let currentSection = null;
+    let returnSection = 'games';
+    let lastBrowseQuery = '';
+
+    function scrollBehavior() {
+      return settings.smoothScroll ? 'smooth' : 'auto';
+    }
 
     const heroSection = document.getElementById('heroSection');
     const mainContent = document.getElementById('mainContent');
@@ -349,6 +551,59 @@
       return `<span>${item.emoji}</span>`;
     }
 
+    function cardOpenAttrs(section, item) {
+      if (!item.url || !item.id) return '';
+      const opener = section === 'proxies' ? 'openProxy' : 'openGame';
+      return `role="button" tabindex="0" onclick="${opener}('${item.id}')" onkeydown="handleCardKey(event, '${item.id}', '${section}')"`;
+    }
+
+    const backButtonHTML = `
+      <button class="icon-btn" data-tooltip="Back" onclick="backFromPlayer()" aria-label="Back">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 12H5"></path>
+          <path d="M12 19l-7-7 7-7"></path>
+        </svg>
+      </button>`;
+
+    const fullscreenButtonHTML = `
+      <button class="icon-btn" data-tooltip="Fullscreen" onclick="fullscreenFrame()" aria-label="Fullscreen">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 3H3v5"></path>
+          <path d="M16 3h5v5"></path>
+          <path d="M21 16v5h-5"></path>
+          <path d="M3 16v5h5"></path>
+          <path d="M3 3l6 6"></path>
+          <path d="M21 3l-6 6"></path>
+          <path d="M21 21l-6-6"></path>
+          <path d="M3 21l6-6"></path>
+        </svg>
+      </button>`;
+
+    function incognitoButtonHTML(id) {
+      return `
+        <button class="icon-btn" data-tooltip="Open in Incognito Tab" onclick="openProxyBlankTab('${id}')" aria-label="Open in incognito tab">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3c-3.4 0-6.3 2.1-7.5 5.1"></path>
+            <path d="M12 3c3.4 0 6.3 2.1 7.5 5.1"></path>
+            <path d="M4.4 9.6C5.3 14.3 8.2 18 12 18s6.7-3.7 7.6-8.4"></path>
+            <circle cx="9" cy="11" r="1.1"></circle>
+            <circle cx="15" cy="11" r="1.1"></circle>
+          </svg>
+        </button>`;
+    }
+
+    function newTabButtonHTML(id, type) {
+      const handler = type === 'proxy' ? `openProxyTab('${id}')` : `openGameTab('${id}')`;
+      return `
+        <button class="icon-btn" data-tooltip="Open in New Tab" onclick="${handler}" aria-label="Open in new tab">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 3h7v7"></path>
+            <path d="M10 14L21 3"></path>
+            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+          </svg>
+        </button>`;
+    }
+
     function buildGamesHTML(section, query = '') {
       const titles = {
         games: "Games",
@@ -359,19 +614,13 @@
       const source = sectionData[section] || [];
       const items = source.filter(i => i.title.toLowerCase().includes(query.toLowerCase()));
 
-      const cards = items.map(item => {
-        const playableAttrs = item.url
-          ? `role="button" tabindex="0" onclick="openGame('${item.id}')" onkeydown="handleCardKey(event, '${item.id}')"`
-          : '';
-
-        return `
-          <div class="game-card" ${playableAttrs}>
+      const cards = items.map(item => `
+          <div class="game-card" ${cardOpenAttrs(section, item)}>
             <div class="game-thumb">${buildThumb(item)}</div>
             <h3>${escapeHTML(item.title)}</h3>
             <p>${escapeHTML(item.desc)}</p>
           </div>
-        `;
-      }).join('');
+        `).join('');
 
       return `
         <div class="section">
@@ -407,25 +656,9 @@
                 </div>
               </div>
               <div class="game-actions">
-                <button class="icon-btn" data-tooltip="Fullscreen" onclick="fullscreenGame()" aria-label="Fullscreen">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M8 3H3v5"></path>
-                    <path d="M16 3h5v5"></path>
-                    <path d="M21 16v5h-5"></path>
-                    <path d="M3 16v5h5"></path>
-                    <path d="M3 3l6 6"></path>
-                    <path d="M21 3l-6 6"></path>
-                    <path d="M21 21l-6-6"></path>
-                    <path d="M3 21l6-6"></path>
-                  </svg>
-                </button>
-                <button class="icon-btn" data-tooltip="Open in New Tab" onclick="openGameTab('${game.id}')" aria-label="Open in new tab">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M14 3h7v7"></path>
-                    <path d="M10 14L21 3"></path>
-                    <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
-                  </svg>
-                </button>
+                ${backButtonHTML}
+                ${fullscreenButtonHTML}
+                ${newTabButtonHTML(game.id, 'game')}
               </div>
             </section>
 
@@ -445,6 +678,7 @@
               </div>
             </section>
 
+            ${settings.showPlayerSuggestions ? `
             <section class="game-suggestions">
               <h3>Game Suggestions</h3>
               <div class="suggestion-grid">
@@ -456,6 +690,66 @@
                   </div>
                 `).join('')}
               </div>
+            </section>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildProxyFrame(proxy) {
+      if (proxy.embeddable === false) {
+        return `
+              <div class="game-frame-wrap proxy-frame-fallback" id="gameFrameWrap">
+                <div class="proxy-open-panel">
+                  <button class="proxy-open-btn" type="button" onclick="openProxyTab('${proxy.id}')">Open Proxy in New Tab</button>
+                </div>
+              </div>`;
+      }
+
+      return `
+              <div class="game-frame-wrap" id="gameFrameWrap">
+                <iframe
+                  id="gameFrame"
+                  src="${escapeHTML(proxy.url)}"
+                  title="${escapeHTML(proxy.title)}"
+                  allow="fullscreen"
+                  allowfullscreen
+                  loading="lazy"></iframe>
+              </div>`;
+    }
+
+    function buildProxyPage(id) {
+      const proxy = proxyIndex[id] || sectionData.proxies[0];
+      const embeddable = proxy.embeddable !== false;
+      const proxyActions = embeddable
+        ? `${backButtonHTML}${incognitoButtonHTML(proxy.id)}${fullscreenButtonHTML}`
+        : backButtonHTML;
+
+      return `
+        <div class="game-page">
+          <div class="game-page-wrap">
+            <section class="game-detail-hero">
+              <div class="game-detail-copy">
+                <div class="game-detail-icon">
+                  <img src="${escapeHTML(proxy.image)}" alt="${escapeHTML(proxy.title)} icon">
+                </div>
+                <div>
+                  <h2>${escapeHTML(proxy.title)}</h2>
+                  <p>${escapeHTML(proxy.desc)}</p>
+                </div>
+              </div>
+              <div class="game-actions">
+                ${proxyActions}
+              </div>
+            </section>
+
+            <section class="game-frame-card">
+              <div class="game-frame-top">
+                <span>${embeddable ? 'Embedded Proxy' : 'External Proxy'}</span>
+                <span>${escapeHTML(proxy.title)}</span>
+              </div>
+              ${buildProxyFrame(proxy)}
             </section>
           </div>
         </div>
@@ -504,8 +798,8 @@
                   </div>
                   <div class="info-feature">
                     <span>🌐</span>
-                    <h4>Proxy Access</h4>
-                    <p>Clean entry points for browsing tools and alternate access routes.</p>
+                    <h4>Gust Proxy</h4>
+                    <p>Download and run GUST on any device, then open it here with fullscreen and private-tab controls.</p>
                   </div>
                   <div class="info-feature">
                     <span>🧰</span>
@@ -613,58 +907,169 @@
           </div>
           <div class="settings-control">
             <div class="segmented">
-              ${options.map(opt => `<button class="${settings[id] === opt.value ? 'active' : ''}" onclick="setOption('${id}', '${opt.value}')">${opt.label}</button>`).join('')}
+              ${options.map(opt => `<button type="button" class="${settings[id] === opt.value ? 'active' : ''}" onclick="setOption('${id}', '${opt.value}')">${opt.label}</button>`).join('')}
             </div>
           </div>
         </div>
       `;
 
+      const textRow = (id, title, desc, placeholder) => `
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <h4>${title}</h4>
+            <p>${desc}</p>
+          </div>
+          <div class="settings-control">
+            <input
+              class="settings-text"
+              type="text"
+              id="setting-${id}"
+              value="${escapeHTML(settings[id] || '')}"
+              placeholder="${escapeHTML(placeholder)}"
+              oninput="onTextSetting('${id}', this.value)">
+          </div>
+        </div>
+      `;
+
+      const panel = (id, title, desc, rows) => `
+        <section class="settings-panel ${settingsPanel === id ? 'active' : ''}" data-panel="${id}">
+          <header class="settings-panel-head">
+            <h3>${title}</h3>
+            <p>${desc}</p>
+          </header>
+          <div class="settings-panel-body">${rows}</div>
+        </section>
+      `;
+
+      const navItem = (id, label, hint) => `
+        <button
+          type="button"
+          class="settings-nav-item ${settingsPanel === id ? 'active' : ''}"
+          data-panel="${id}"
+          onclick="switchSettingsPanel('${id}')"
+          aria-current="${settingsPanel === id ? 'true' : 'false'}">
+          <span class="settings-nav-label">${label}</span>
+          <span class="settings-nav-hint">${hint}</span>
+        </button>
+      `;
+
+      const audioPanel = panel('audio', 'Audio', 'Control background music and interface sound effects.', `
+        ${toggleRow('music', 'Background Music', 'Play atmospheric music while you browse.', settings.music)}
+        ${rangeRow('musicVolume', 'Music Volume', 'Set the background music level.', 0, 50, 1)}
+        ${toggleRow('sfx', 'Sound Effects', 'Play hover and interaction sounds.', settings.sfx)}
+        ${rangeRow('sfxVolume', 'Sound Effect Volume', 'Adjust hover and interaction sound volume.', 0, 50, 1)}
+      `);
+
+      const appearancePanel = panel('appearance', 'Appearance', 'Tune colors, glow, particles, and background atmosphere.', `
+        ${selectRow('accent', 'Accent Theme', 'Change the glow color system across the interface.', [
+          { value: 'aurora', label: 'Aurora' },
+          { value: 'cyan', label: 'Cyan' },
+          { value: 'violet', label: 'Violet' },
+          { value: 'emerald', label: 'Emerald' }
+        ])}
+        ${rangeRow('glow', 'Glow Intensity', 'Tune hover illumination and neon effects.', 40, 160, 5)}
+        ${toggleRow('particles', 'Particle Animation', 'Animated star particles in the background.', settings.particles)}
+        ${segmentRow('particleDensity', 'Particle Density', 'Choose how many background particles are shown.', [
+          { value: 'low', label: 'Low' },
+          { value: 'normal', label: 'Normal' },
+          { value: 'high', label: 'High' }
+        ])}
+        ${toggleRow('backgroundOrbs', 'Background Glow Orbs', 'Show soft ambient color orbs behind the interface.', settings.backgroundOrbs)}
+        ${toggleRow('highContrast', 'High Contrast', 'Increase text and panel contrast for easier scanning.', settings.highContrast)}
+      `);
+
+      const motionPanel = panel('motion', 'Motion', 'Adjust animation intensity and navigation feel.', `
+        ${toggleRow('reducedMotion', 'Reduce Motion', 'Minimize animations across the interface.', settings.reducedMotion)}
+        ${toggleRow('smoothScroll', 'Smooth Scrolling', 'Use smooth scroll when moving between pages and sections.', settings.smoothScroll)}
+      `);
+
+      const interfacePanel = panel('interface', 'Interface', 'Customize browsing layout and player page behavior.', `
+        ${toggleRow('compactCards', 'Compact Cards', 'Show smaller cards for denser browsing pages.', settings.compactCards)}
+        ${toggleRow('sectionSearch', 'Section Search Bars', 'Show search fields at the top of Games, Proxies, and Tools.', settings.sectionSearch)}
+        ${toggleRow('showPlayerSuggestions', 'Game Suggestions', 'Show recommendation cards below the game player.', settings.showPlayerSuggestions)}
+      `);
+
+      const cloakingPanel = panel('cloaking', 'Cloaking', 'Disguise your browser tab and control how games and proxies launch externally.', `
+        ${toggleRow('tabCloak', 'Tab Cloaking', 'Change the tab title and favicon to a school-safe disguise.', settings.tabCloak)}
+        ${toggleRow('autoTabCloak', 'Auto Tab Cloaking', 'Only apply disguises while a game or proxy player page is open.', settings.autoTabCloak)}
+        ${selectRow('cloakPreset', 'Cloak Preset', 'Choose a preset title and icon style for tab disguises.', [
+          { value: 'google', label: 'Google' },
+          { value: 'classroom', label: 'Classroom' },
+          { value: 'drive', label: 'Drive' },
+          { value: 'docs', label: 'Docs' },
+          { value: 'home', label: 'Home' }
+        ])}
+        ${textRow('cloakCustomTitle', 'Custom Tab Title', 'Optional override for the disguised tab title. Leave blank to use the preset.', 'e.g. Google')}
+        ${toggleRow('autoExternalLaunch', 'Auto External Launch', 'Automatically open games and proxies in an extra tab when you launch them.', settings.autoExternalLaunch)}
+        ${segmentRow('autoLaunchMode', 'Auto Launch Mode', 'Choose how the automatic external tab is created.', [
+          { value: 'aboutBlank', label: 'About:Blank' },
+          { value: 'blob', label: 'Blob' }
+        ])}
+        <div class="settings-note">
+          Auto launch and cloaking preferences are saved in your browser and restore when you return later.
+        </div>
+      `);
+
+      const systemPanel = panel('system', 'System', 'Reset preferences and view hub information.', `
+        <div class="settings-about-card">
+          <strong>Voltra Proxy</strong>
+          <p>Early access hub for games, proxies, and tools with a glass neon interface.</p>
+          <div class="settings-about-meta">
+            <span>11 games</span>
+            <span>6 proxies</span>
+            <span>v1.0.0</span>
+          </div>
+        </div>
+        <button type="button" class="settings-reset" onclick="resetSettings()">Reset All Settings</button>
+      `);
+
       return `
         <div class="settings-page">
-          <h2>Settings</h2>
-          <p class="settings-desc">Customize your Voltra experience.</p>
-
-          <div class="settings-group">
-            <div class="settings-group-label">Audio</div>
-            ${toggleRow('music', 'Background Music', 'Play atmospheric music while you browse.', settings.music)}
-            ${rangeRow('musicVolume', 'Music Volume', 'Set the background music level.', 0, 50, 1)}
-            ${toggleRow('sfx', 'Sound Effects', 'Play hover and interaction sounds.', settings.sfx)}
-            ${rangeRow('sfxVolume', 'Sound Effect Volume', 'Adjust hover and interaction sound volume.', 0, 50, 1)}
+          <div class="settings-window">
+            <header class="settings-window-header">
+              <h2>Settings</h2>
+            </header>
+            <div class="settings-window-body">
+              <nav class="settings-sidebar" aria-label="Settings categories">
+                ${navItem('audio', 'Audio', 'Music & SFX')}
+                ${navItem('appearance', 'Appearance', 'Theme & FX')}
+                ${navItem('motion', 'Motion', 'Animation')}
+                ${navItem('interface', 'Interface', 'Layout')}
+                ${navItem('cloaking', 'Cloaking', 'Tab & launch')}
+                ${navItem('system', 'System', 'About & reset')}
+              </nav>
+              <div class="settings-panels">
+                ${audioPanel}
+                ${appearancePanel}
+                ${motionPanel}
+                ${interfacePanel}
+                ${cloakingPanel}
+                ${systemPanel}
+              </div>
+            </div>
           </div>
-
-          <div class="settings-group">
-            <div class="settings-group-label">Visuals</div>
-            ${selectRow('accent', 'Accent Theme', 'Change the glow color system across the interface.', [
-              { value: 'aurora', label: 'Aurora' },
-              { value: 'cyan', label: 'Cyan' },
-              { value: 'violet', label: 'Violet' },
-              { value: 'emerald', label: 'Emerald' }
-            ])}
-            ${rangeRow('glow', 'Glow Intensity', 'Tune hover illumination and neon effects.', 40, 160, 5)}
-            ${toggleRow('particles', 'Particle Animation', 'Animated star particles in the background.', settings.particles)}
-            ${segmentRow('particleDensity', 'Particle Density', 'Choose how many background particles are shown.', [
-              { value: 'low', label: 'Low' },
-              { value: 'normal', label: 'Normal' },
-              { value: 'high', label: 'High' }
-            ])}
-            ${toggleRow('reducedMotion', 'Reduce Motion', 'Minimize animations across the interface.', settings.reducedMotion)}
-            ${toggleRow('highContrast', 'High Contrast', 'Increase text and panel contrast for easier scanning.', settings.highContrast)}
-          </div>
-
-          <div class="settings-group">
-            <div class="settings-group-label">Layout</div>
-            ${toggleRow('compactCards', 'Compact Cards', 'Show smaller cards for denser browsing pages.', settings.compactCards)}
-            ${toggleRow('sectionSearch', 'Section Search Bars', 'Show search fields at the top of Games, Proxies, and Tools.', settings.sectionSearch)}
-            <button class="settings-reset" onclick="resetSettings()">Reset Customization</button>
-          </div>
-
-          <div class="version-tag">VOLTRA v1.0.0 — Early Access</div>
         </div>
       `;
     }
 
+    function switchSettingsPanel(id) {
+      settingsPanel = id;
+      saveStoredSettings();
+      document.querySelectorAll('.settings-nav-item').forEach(btn => {
+        const active = btn.dataset.panel === id;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-current', active ? 'true' : 'false');
+      });
+      document.querySelectorAll('.settings-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.dataset.panel === id);
+      });
+    }
+
     function render(section, query = '') {
       currentSection = section;
+      if (section === 'games' || section === 'proxies' || section === 'tools') {
+        lastBrowseQuery = query;
+      }
 
       const isFullPage = fullPageSections.includes(section);
 
@@ -682,35 +1087,72 @@
       mainContent.innerHTML = html;
       setActiveNav(section);
       attachHoverSFX();
+      updateTabCloakState();
       requestAnimationFrame(syncLayout);
     }
 
     function loadSection(section) {
       render(section);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+    }
+
+    function captureBrowseState(section) {
+      returnSection = section;
+      const searchInput = document.getElementById('searchInput');
+      lastBrowseQuery = searchInput ? searchInput.value : '';
     }
 
     function openGame(id) {
       const game = gameIndex[id];
       if (!game) return;
 
+      captureBrowseState('games');
       currentSection = 'game';
       heroSection.style.display = 'none';
       mainContent.innerHTML = buildGamePage(id);
       setActiveNav('games');
       attachHoverSFX();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateTabCloakState();
+      maybeAutoLaunchExternal(game.url, game.title);
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
       requestAnimationFrame(syncLayout);
     }
 
-    function handleCardKey(event, id) {
+    function openProxy(id) {
+      const proxy = proxyIndex[id];
+      if (!proxy) return;
+
+      captureBrowseState('proxies');
+      currentSection = 'proxy';
+      heroSection.style.display = 'none';
+      mainContent.innerHTML = buildProxyPage(id);
+      setActiveNav('proxies');
+      attachHoverSFX();
+      updateTabCloakState();
+      if (proxy.url) maybeAutoLaunchExternal(proxy.url, proxy.title);
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+      requestAnimationFrame(syncLayout);
+    }
+
+    function backFromPlayer() {
+      render(returnSection, lastBrowseQuery);
+      heroSection.style.display = 'none';
+      setActiveNav(returnSection);
+      attachHoverSFX();
+      updateTabCloakState();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      requestAnimationFrame(syncLayout);
+    }
+
+    function handleCardKey(event, id, section = 'games') {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        openGame(id);
+        if (section === 'proxies') openProxy(id);
+        else openGame(id);
       }
     }
 
-    function fullscreenGame() {
+    function fullscreenFrame() {
       const frameWrap = document.getElementById('gameFrameWrap');
       const frame = document.getElementById('gameFrame');
       const target = frameWrap || frame;
@@ -724,6 +1166,18 @@
       const game = gameIndex[id];
       if (!game) return;
       window.open(game.url, '_blank', 'noopener,noreferrer');
+    }
+
+    function openProxyTab(id) {
+      const proxy = proxyIndex[id];
+      if (!proxy) return;
+      window.open(proxy.url, '_blank', 'noopener,noreferrer');
+    }
+
+    function openProxyBlankTab(id) {
+      const proxy = proxyIndex[id];
+      if (!proxy) return;
+      openUrlInAboutBlank(proxy.url, proxy.title);
     }
 
     function setActiveNav(section) {
@@ -798,8 +1252,9 @@
     function openSearchResult(section, title) {
       const match = (sectionData[section] || []).find(item => item.title === title);
 
-      if (match && match.url) {
-        openGame(match.id);
+      if (match && match.url && match.id) {
+        if (section === 'proxies') openProxy(match.id);
+        else openGame(match.id);
         return;
       }
 
@@ -815,13 +1270,13 @@
     }
 
     function handleSearch(query) {
-      if (currentSection && currentSection !== 'settings' && currentSection !== 'info' && currentSection !== 'game') {
+      if (currentSection && !['settings', 'info', 'game', 'proxy'].includes(currentSection)) {
         const grid = document.getElementById('gamesGrid');
         if (!grid) return;
         const items = (sectionData[currentSection] || [])
           .filter(i => i.title.toLowerCase().includes(query.toLowerCase()));
         grid.innerHTML = items.map(item => `
-          <div class="game-card" ${item.url ? `role="button" tabindex="0" onclick="openGame('${item.id}')" onkeydown="handleCardKey(event, '${item.id}')"` : ''}>
+          <div class="game-card" ${cardOpenAttrs(currentSection, item)}>
             <div class="game-thumb">${buildThumb(item)}</div>
             <h3>${escapeHTML(item.title)}</h3>
             <p>${escapeHTML(item.desc)}</p>
@@ -837,7 +1292,8 @@
       currentSection = null;
       setActiveNav(null);
       clearHomeSearch();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateTabCloakState();
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
       requestAnimationFrame(syncLayout);
     }
 
@@ -865,6 +1321,7 @@
       document.body.classList.toggle('reduced-motion', settings.reducedMotion);
       document.body.classList.toggle('compact-cards', settings.compactCards);
       document.body.classList.toggle('high-contrast', settings.highContrast);
+      document.body.classList.toggle('hide-orbs', !settings.backgroundOrbs);
 
       visualMotionReduced = settings.reducedMotion;
       music.volume = settings.musicVolume / 100;
@@ -875,6 +1332,8 @@
 
       while (particles.length < targetParticles) particles.push(new Particle());
       if (particles.length > targetParticles) particles.length = targetParticles;
+
+      updateTabCloakState();
     }
 
     function onToggle(id, val) {
@@ -885,6 +1344,7 @@
         muteBtn.innerText = muted ? '🔇' : '🔊';
       }
 
+      saveStoredSettings();
       applySettings();
     }
 
@@ -892,30 +1352,45 @@
       settings[id] = Number(val);
       const output = document.getElementById(`${id}-value`);
       if (output) output.textContent = formatSettingValue(id);
+      saveStoredSettings();
       applySettings();
     }
 
     function onSelect(id, val) {
       settings[id] = val;
+      saveStoredSettings();
+      applySettings();
+    }
+
+    function onTextSetting(id, val) {
+      settings[id] = val;
+      saveStoredSettings();
       applySettings();
     }
 
     function setOption(id, val) {
       settings[id] = val;
+      saveStoredSettings();
       applySettings();
       if (currentSection === 'settings') render('settings');
     }
 
     function resetSettings() {
       Object.assign(settings, defaultSettings);
+      settingsPanel = 'audio';
       muted = false;
       muteBtn.innerText = '🔊';
+      try {
+        localStorage.removeItem(SETTINGS_STORAGE_KEY);
+      } catch (err) {
+        console.warn('Could not clear saved settings.', err);
+      }
       applySettings();
       render('settings');
     }
 
     function attachHoverSFX() {
-      document.querySelectorAll('.game-card, .info-panel, .info-feature, .settings-reset, .home-search-item, .suggestion-card, .icon-btn').forEach(el => {
+      document.querySelectorAll('.game-card, .info-panel, .info-feature, .settings-reset, .settings-nav-item, .home-search-item, .suggestion-card, .icon-btn, .proxy-open-btn').forEach(el => {
         if (!el.dataset.sfx) {
           el.dataset.sfx = "1";
           el.addEventListener('mouseenter', () => playHover(0.92));
@@ -940,6 +1415,7 @@
       muted = !muted;
       settings.music = !muted;
       muteBtn.innerText = muted ? '🔇' : '🔊';
+      saveStoredSettings();
       applySettings();
 
       const t = document.getElementById('setting-music');

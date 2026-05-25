@@ -93,6 +93,12 @@
       pointer-events: none;
       mix-blend-mode: screen;
       animation: float 10s ease-in-out infinite alternate;
+      transition: opacity 0.35s ease;
+    }
+
+    body.hide-orbs .blur-orb {
+      opacity: 0;
+      visibility: hidden;
     }
 
     .orb1 {
@@ -508,10 +514,11 @@
     }
 
     .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
+      display: flex;
+      flex-wrap: wrap;
       gap: 24px;
-      justify-content: start;
+      justify-content: center;
+      align-items: stretch;
     }
 
     .game-card {
@@ -519,8 +526,9 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      width: 100%;
-      max-width: 300px;
+      flex: 0 1 300px;
+      width: 300px;
+      max-width: 100%;
       min-height: 320px;
       border-radius: var(--card-radius);
       background: rgba(255,255,255,0.05);
@@ -791,6 +799,57 @@
       background: #020409;
     }
 
+    .proxy-frame-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(var(--accent-a),0.14), transparent 55%),
+        radial-gradient(circle at 75% 85%, rgba(var(--accent-b),0.1), transparent 45%),
+        #020409;
+    }
+
+    .proxy-open-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 32px;
+    }
+
+    .proxy-open-btn {
+      padding: 16px 30px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background:
+        linear-gradient(135deg, rgba(var(--accent-a),0.14), rgba(var(--accent-b),0.08)),
+        rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      color: rgba(255,255,255,0.94);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: 0.28s ease;
+      box-shadow:
+        0 0 18px rgba(var(--accent-a),0.1),
+        0 12px 32px rgba(0,0,0,0.35);
+    }
+
+    .proxy-open-btn:hover {
+      border-color: rgba(var(--accent-a),0.32);
+      background:
+        linear-gradient(135deg, rgba(var(--accent-a),0.22), rgba(var(--accent-b),0.12)),
+        rgba(255,255,255,0.09);
+      box-shadow:
+        0 0 28px rgba(var(--accent-a), var(--glow-card-a)),
+        0 0 52px rgba(var(--accent-b), var(--glow-card-b)),
+        0 16px 40px rgba(0,0,0,0.4);
+      transform: translateY(-1px);
+    }
+
     .game-suggestions {
       margin-top: 34px;
     }
@@ -845,12 +904,12 @@
     }
 
     body.compact-cards .games-grid {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 260px));
       gap: 18px;
     }
 
     body.compact-cards .game-card {
-      max-width: 260px;
+      flex: 0 1 260px;
+      width: 260px;
       min-height: 280px;
       padding: 18px;
     }
@@ -864,6 +923,7 @@
     }
 
     body.high-contrast .game-card,
+    body.high-contrast .settings-window,
     body.high-contrast .settings-row,
     body.high-contrast .info-panel,
     body.high-contrast .info-hero,
@@ -1080,33 +1140,230 @@
 
     .settings-page {
       min-height: calc(100vh - var(--nav-height));
-      padding: 60px 50px 100px;
+      padding: 48px 24px 100px;
+      display: flex;
+      justify-content: center;
     }
 
-    .settings-page h2 {
+    .settings-window {
+      display: flex;
+      flex-direction: column;
+      width: min(980px, 100%);
+      min-height: 560px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background:
+        linear-gradient(160deg, rgba(var(--accent-a),0.1), rgba(var(--accent-b),0.05) 42%, rgba(255,255,255,0.03)),
+        rgba(8,12,20,0.82);
+      backdrop-filter: blur(24px);
+      box-shadow:
+        0 0 40px rgba(var(--accent-a),0.14),
+        0 0 80px rgba(var(--accent-b),0.08),
+        0 28px 80px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+
+    .settings-window-header {
+      flex-shrink: 0;
+      padding: 24px 24px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .settings-window-header h2 {
+      margin: 0;
       font-size: 2rem;
       font-weight: 700;
-      color: rgba(255,255,255,0.92);
-      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(180deg, white, rgba(255,255,255,0.58));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .settings-desc {
-      color: rgba(255,255,255,0.45);
-      font-size: 0.95rem;
-      margin-bottom: 48px;
+    .settings-window-body {
+      display: flex;
+      flex: 1;
+      align-items: stretch;
+      min-height: 0;
     }
 
-    .settings-group {
-      margin-bottom: 40px;
+    .settings-sidebar {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 220px;
+      align-self: stretch;
+      gap: 6px;
+      padding: 16px 12px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.14);
     }
 
-    .settings-group-label {
-      font-size: 0.7rem;
+    .settings-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: rgba(255,255,255,0.62);
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .settings-nav-item:hover {
+      color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.06);
+    }
+
+    .settings-nav-item.active {
+      color: white;
+      background:
+        linear-gradient(135deg, rgba(var(--accent-a),0.18), rgba(var(--accent-b),0.1)),
+        rgba(255,255,255,0.06);
+      border-color: rgba(var(--accent-a),0.24);
+      box-shadow:
+        0 0 20px rgba(var(--accent-a),0.14),
+        0 0 36px rgba(var(--accent-b),0.08);
+    }
+
+    .settings-nav-label {
+      font-size: 0.92rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+    }
+
+    .settings-nav-hint {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.42);
+    }
+
+    .settings-nav-item.active .settings-nav-hint {
+      color: rgba(255,255,255,0.58);
+    }
+
+    .settings-panels {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      padding: 22px 22px 26px;
+      overflow: auto;
+    }
+
+    .settings-text {
+      min-width: min(240px, 100%);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font: inherit;
+      font-size: 0.88rem;
+      outline: none;
+      transition: 0.25s ease;
+    }
+
+    .settings-text:focus {
+      border-color: rgba(var(--accent-a),0.28);
+      box-shadow:
+        0 0 18px rgba(var(--accent-a),0.12),
+        0 0 32px rgba(var(--accent-b),0.08);
+    }
+
+    .settings-text::placeholder {
+      color: rgba(255,255,255,0.32);
+    }
+
+    .settings-note {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(var(--accent-a),0.14);
+      background: rgba(var(--accent-a),0.06);
+      color: rgba(255,255,255,0.52);
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    .settings-panel {
+      display: none;
+      animation: settingsPanelIn 0.28s ease;
+    }
+
+    .settings-panel.active {
+      display: block;
+    }
+
+    @keyframes settingsPanelIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body.reduced-motion .settings-panel {
+      animation: none;
+    }
+
+    .settings-panel-head {
+      margin-bottom: 18px;
+    }
+
+    .settings-panel-head h3 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.94);
+      margin-bottom: 6px;
+    }
+
+    .settings-panel-head p {
+      color: rgba(255,255,255,0.48);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      max-width: 520px;
+    }
+
+    .settings-panel-body {
+      display: grid;
+      gap: 10px;
+    }
+
+    .settings-about-card {
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(135deg, rgba(var(--accent-a),0.1), rgba(255,255,255,0.04));
+    }
+
+    .settings-about-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .settings-about-card p {
+      color: rgba(255,255,255,0.52);
+      font-size: 0.88rem;
+      line-height: 1.55;
       margin-bottom: 14px;
+    }
+
+    .settings-about-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .settings-about-meta span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.58);
+      font-size: 0.72rem;
+      font-weight: 700;
     }
 
     .settings-row {
@@ -1209,6 +1466,7 @@
 
     .settings-reset {
       cursor: pointer;
+      width: 100%;
       margin-top: 4px;
       padding: 12px 18px;
       border-radius: 14px;
@@ -1326,7 +1584,29 @@
       .navbar { padding: 16px 20px; }
       .nav-links { display: none; }
       .section { padding: 40px 20px 80px; }
-      .settings-page { padding: 40px 20px 80px; }
+      .settings-page { padding: 28px 14px 80px; }
+      .settings-window {
+        min-height: 0;
+      }
+      .settings-window-body {
+        flex-direction: column;
+      }
+      .settings-sidebar {
+        flex: 0 0 auto;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        padding: 12px;
+      }
+      .settings-nav-item {
+        flex: 0 0 auto;
+        min-width: 128px;
+      }
+      .settings-panels {
+        padding: 16px 14px 22px;
+      }
       .info-page { padding: 40px 20px 80px; }
       .game-page { padding: 40px 20px 80px; }
       .game-detail-copy {
