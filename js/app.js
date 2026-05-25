@@ -134,7 +134,27 @@
     requestAnimationFrame(syncLayout);
 
     const cookieIcon = "https://outred.org/g/assets/cookie-clicker/cookie1.jpeg";
-    const cookieUrl = "https://cookieclickernew.com";
+    const cookieUrl = "https://script.google.com/macros/s/AKfycbxGM35J29NkO-2LYjxWj_cA9IUaaXypkUy-LqXyLRbGTz0R6lXmAEapz1STN1jlTIRavw/exec";
+    const slopeIcon = "https://outred.org/g/assets/slope/slope4.jpeg";
+    const slopeUrl = "https://slope-game-io.github.io/games/slope/index.html";
+    const basketballStarsIcon = "https://outred.org/g/assets/basketball-stars/assets/images/basketball-stars.png";
+    const basketballStarsUrl = "https://script.google.com/macros/s/AKfycbxy1zNkV2rOD3Y_MXtUDPDNAMdvJ1HgBkOTnzq4e5ZW-WJkznkIoUTr1J1fmEQ_cG4b4Q/exec";
+    const clusterRushIcon = "https://outred.org/g/assets/cluster-rush/splash.png";
+    const clusterRushUrl = "https://script.google.com/macros/s/AKfycbw6e8fflbfydV7kom5id09nKaM6ix0hLlXHbs3XHOnxzrndUgPtHUHENrwKomI2Hpk3/exec";
+    const driftHuntersIcon = "https://outred.org/g/assets/drift-hunters/drift-hunters.png";
+    const driftHuntersUrl = "https://script.google.com/macros/s/AKfycbw8iHPqdVFEzquUYbNxFVAu1Tw4Nri5SWMRLdP_c7a84vCOHVG7YUWuhjSVptg1SVHr/exec";
+    const duckLifeIcon = "https://outred.org/g/assets/ducklife1/ducklife.png";
+    const duckLifeUrl = "https://ducklife.gitlab.io/file/";
+    const minecraftIcon = "https://outred.org/g/assets/minecraft-15/splash.jpeg";
+    const minecraftUrl = "https://minecrafteaglercraft.gitlab.io/go/minecraft-1.5.2/";
+    const elasticManIcon = "https://outred.org/g/assets/elasticman/elasticman.jpg";
+    const elasticManUrl = "https://script.google.com/macros/s/AKfycbwWOlo7-AMuejI5XKrJqrSzDvuH9X6yfNfhgX4HSL1P-i3eAY5Qi51vMdDJM13V4MXJIQ/exec";
+    const fireboyWatergirlIcon = "https://outred.org/g/assets/fireboywatergirlforesttemple/logo.jpeg";
+    const fireboyWatergirlUrl = "https://script.google.com/macros/s/AKfycbw8EVdUCzgTInevqT2h0DOxeN07fjoLrB5DowKa1TlhpqFnJ1IkViYJ7uV58-8yITGztg/exec";
+    const flappyBirdIcon = "https://outred.org/g/assets/flappy-bird/assets/thumb.png";
+    const flappyBirdUrl = "https://scratch.mit.edu/projects/embed/17964117/";
+    const fruitNinjaIcon = "https://outred.org/g/assets/fruitninja/FruitNinjaTeaser.jpg";
+    const fruitNinjaUrl = "https://classroom2111.github.io/g50/class-22/";
 
     const sectionData = {
       games: [
@@ -146,6 +166,96 @@
           emoji: "🍪",
           image: cookieIcon,
           url: cookieUrl
+        },
+        {
+          id: "slope",
+          title: "Slope",
+          desc: "Steer a neon ball down an endless 3D track, dodge obstacles, and chase your best run in this fast reflex arcade favorite.",
+          badge: "ARCADE",
+          emoji: "📐",
+          image: slopeIcon,
+          url: slopeUrl
+        },
+        {
+          id: "basketball-stars",
+          title: "Basketball Stars",
+          desc: "Drop into fast 1v1 arcade hoops, chain flashy shots, and outplay rivals with timing, steals, and big-head streetball style.",
+          badge: "SPORTS",
+          emoji: "🏀",
+          image: basketballStarsIcon,
+          url: basketballStarsUrl
+        },
+        {
+          id: "cluster-rush",
+          title: "Cluster Rush",
+          desc: "Leap across a speeding convoy of trucks in a frantic low-poly runner where one missed jump sends you tumbling off the road.",
+          badge: "RUNNER",
+          emoji: "🚛",
+          image: clusterRushIcon,
+          url: clusterRushUrl
+        },
+        {
+          id: "drift-hunters",
+          title: "Drift Hunters",
+          desc: "Tune your car, hit the track, and chase perfect drifts with smoke-filled corners and upgrade-heavy street racing action.",
+          badge: "RACING",
+          emoji: "🏎️",
+          image: driftHuntersIcon,
+          url: driftHuntersUrl
+        },
+        {
+          id: "duck-life",
+          title: "Duck Life",
+          desc: "Train your duck in running, flying, and swimming, then enter races and grow from a rookie hatchling into a champion.",
+          badge: "ADVENTURE",
+          emoji: "🦆",
+          image: duckLifeIcon,
+          url: duckLifeUrl
+        },
+        {
+          id: "minecraft",
+          title: "Minecraft",
+          desc: "Explore, mine, and craft in a blocky sandbox where you gather resources, build shelters, and survive the night.",
+          badge: "SANDBOX",
+          emoji: "⛏️",
+          image: minecraftIcon,
+          url: minecraftUrl
+        },
+        {
+          id: "elastic-man",
+          title: "Elastic Man",
+          desc: "Click and drag to stretch a rubbery 3D face with satisfying physics that wobble and snap back every time you let go.",
+          badge: "CASUAL",
+          emoji: "🎭",
+          image: elasticManIcon,
+          url: elasticManUrl
+        },
+        {
+          id: "fireboy-and-watergirl",
+          title: "Fireboy and Watergirl",
+          desc: "Guide fire and water through temple levels, switch between heroes, and solve co-op puzzles using each one's unique powers.",
+          badge: "PUZZLE",
+          emoji: "🔥",
+          image: fireboyWatergirlIcon,
+          url: fireboyWatergirlUrl
+        },
+        {
+          id: "flappy-bird",
+          title: "Flappy Bird",
+          desc: "Tap to stay airborne and thread a pixel bird through tight pipe gaps in this brutally simple, endlessly replayable arcade test.",
+          badge: "ARCADE",
+          emoji: "🐦",
+          image: flappyBirdIcon,
+          url: flappyBirdUrl
+        },
+        {
+          id: "fruit-ninja",
+          title: "Fruit Ninja",
+          desc: "Swipe fast to slice flying fruit, chain combos, and dodge bombs in a juicy reflex arcade classic built for quick sessions.",
+          badge: "ACTION",
+          emoji: "🍉",
+          image: fruitNinjaIcon,
+          url: fruitNinjaUrl
         }
       ],
       proxies: [
@@ -369,8 +479,8 @@
                   <span>Main hub categories</span>
                 </div>
                 <div class="info-stat">
-                  <strong>1</strong>
-                  <span>Featured playable game</span>
+                  <strong>11</strong>
+                  <span>Featured playable games</span>
                 </div>
                 <div class="info-stat">
                   <strong>v1.0</strong>
@@ -431,7 +541,7 @@
                     <div class="info-dot"></div>
                     <div>
                       <strong>Game Player</strong>
-                      <p>Cookie Clicker opens in a dedicated themed page with fullscreen and new-tab controls.</p>
+                      <p>Games open in a dedicated themed page with fullscreen and new-tab controls.</p>
                     </div>
                   </div>
                   <div class="info-list-item">
