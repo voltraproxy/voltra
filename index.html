@@ -13,6 +13,19 @@
 </head>
 <body>
 
+  <div id="passwordOverlay" class="password-overlay" style="display: none;">
+    <div class="password-overlay-content">
+      <div class="password-logo">VOLTRA</div>
+      <h2>Enter Password</h2>
+      <p>Please enter the password to access Voltra.</p>
+      <div class="password-input-wrapper">
+        <input type="password" id="passwordInput" placeholder="Enter password..." class="password-input">
+        <button onclick="submitPassword()" class="password-submit">Enter</button>
+      </div>
+      <p id="passwordError" class="password-error">Incorrect password. Please try again.</p>
+    </div>
+  </div>
+
   <canvas id="bg"></canvas>
   <div class="blur-orb orb1"></div>
   <div class="blur-orb orb2"></div>

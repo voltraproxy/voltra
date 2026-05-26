@@ -371,7 +371,14 @@
       cloakPreset: 'google',
       cloakCustomTitle: '',
       autoExternalLaunch: false,
-      autoLaunchMode: 'aboutBlank'
+      autoLaunchMode: 'aboutBlank',
+      autoLaunchOnLoad: false,
+      requirePassword: false,
+      websitePassword: '',
+      username: '',
+      autoLock: false,
+      autoLockTime: '15',
+      bypassKeybind: ''
     };
 
     const settings = { ...defaultSettings };
@@ -380,9 +387,9 @@
     const cloakPresets = {
       google: { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
       classroom: { title: 'Google Classroom', icon: 'https://ssl.gstatic.com/classroom/favicon.png' },
-      drive: { title: 'Google Drive', icon: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico' },
-      docs: { title: 'Google Docs', icon: 'https://docs.google.com/favicon.ico' },
-      home: { title: 'Home', icon: 'https://www.google.com/favicon.ico' }
+      drive: { title: 'Google Drive', icon: 'https://docs.google.com/favicon.ico' },
+      docs: { title: 'Google Docs', icon: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico' },
+      home: { title: 'Google', icon: 'https://www.google.com/favicon.ico' }
     };
 
     function loadStoredSettings() {
@@ -511,7 +518,12 @@
       aurora: { a: '125,211,252', b: '192,132,252', c: '0,255,170' },
       cyan: { a: '56,189,248', b: '45,212,191', c: '125,211,252' },
       violet: { a: '196,181,253', b: '168,85,247', c: '244,114,182' },
-      emerald: { a: '110,231,183', b: '34,211,238', c: '52,211,153' }
+      emerald: { a: '110,231,183', b: '34,211,238', c: '52,211,153' },
+      sunset: { a: '251,146,60', b: '234,88,12', c: '244,63,94' },
+      ocean: { a: '14,165,233', b: '59,130,246', c: '99,102,241' },
+      cherry: { a: '244,114,182', b: '236,72,153', c: '219,39,119' },
+      mint: { a: '52,211,153', b: '16,185,129', c: '5,150,105' },
+      dracula: { a: '189,147,249', b: '139,233,253', c: '80,250,123' }
     };
 
     const particleDensityMap = {
@@ -958,6 +970,9 @@
         ${rangeRow('musicVolume', 'Music Volume', 'Set the background music level.', 0, 50, 1)}
         ${toggleRow('sfx', 'Sound Effects', 'Play hover and interaction sounds.', settings.sfx)}
         ${rangeRow('sfxVolume', 'Sound Effect Volume', 'Adjust hover and interaction sound volume.', 0, 50, 1)}
+        <div class="settings-note">
+          All settings are locally saved unless instructed otherwise.
+        </div>
       `);
 
       const appearancePanel = panel('appearance', 'Appearance', 'Tune colors, glow, particles, and background atmosphere.', `
@@ -965,7 +980,12 @@
           { value: 'aurora', label: 'Aurora' },
           { value: 'cyan', label: 'Cyan' },
           { value: 'violet', label: 'Violet' },
-          { value: 'emerald', label: 'Emerald' }
+          { value: 'emerald', label: 'Emerald' },
+          { value: 'sunset', label: 'Sunset' },
+          { value: 'ocean', label: 'Ocean' },
+          { value: 'cherry', label: 'Cherry' },
+          { value: 'mint', label: 'Mint' },
+          { value: 'dracula', label: 'Dracula' }
         ])}
         ${rangeRow('glow', 'Glow Intensity', 'Tune hover illumination and neon effects.', 40, 160, 5)}
         ${toggleRow('particles', 'Particle Animation', 'Animated star particles in the background.', settings.particles)}
@@ -976,17 +996,26 @@
         ])}
         ${toggleRow('backgroundOrbs', 'Background Glow Orbs', 'Show soft ambient color orbs behind the interface.', settings.backgroundOrbs)}
         ${toggleRow('highContrast', 'High Contrast', 'Increase text and panel contrast for easier scanning.', settings.highContrast)}
+        <div class="settings-note">
+          All settings are locally saved unless instructed otherwise.
+        </div>
       `);
 
       const motionPanel = panel('motion', 'Motion', 'Adjust animation intensity and navigation feel.', `
         ${toggleRow('reducedMotion', 'Reduce Motion', 'Minimize animations across the interface.', settings.reducedMotion)}
         ${toggleRow('smoothScroll', 'Smooth Scrolling', 'Use smooth scroll when moving between pages and sections.', settings.smoothScroll)}
+        <div class="settings-note">
+          All settings are locally saved unless instructed otherwise.
+        </div>
       `);
 
       const interfacePanel = panel('interface', 'Interface', 'Customize browsing layout and player page behavior.', `
         ${toggleRow('compactCards', 'Compact Cards', 'Show smaller cards for denser browsing pages.', settings.compactCards)}
         ${toggleRow('sectionSearch', 'Section Search Bars', 'Show search fields at the top of Games, Proxies, and Tools.', settings.sectionSearch)}
         ${toggleRow('showPlayerSuggestions', 'Game Suggestions', 'Show recommendation cards below the game player.', settings.showPlayerSuggestions)}
+        <div class="settings-note">
+          All settings are locally saved unless instructed otherwise.
+        </div>
       `);
 
       const cloakingPanel = panel('cloaking', 'Cloaking', 'Disguise your browser tab and control how games and proxies launch externally.', `
@@ -1000,13 +1029,16 @@
           { value: 'home', label: 'Home' }
         ])}
         ${textRow('cloakCustomTitle', 'Custom Tab Title', 'Optional override for the disguised tab title. Leave blank to use the preset.', 'e.g. Google')}
-        ${toggleRow('autoExternalLaunch', 'Auto External Launch', 'Automatically open games and proxies in an extra tab when you launch them.', settings.autoExternalLaunch)}
-        ${segmentRow('autoLaunchMode', 'Auto Launch Mode', 'Choose how the automatic external tab is created.', [
-          { value: 'aboutBlank', label: 'About:Blank' },
-          { value: 'blob', label: 'Blob' }
-        ])}
+        ${toggleRow('autoExternalLaunch', 'Auto External Launch(Games, Apps, etc.)', 'Automatically open games and proxies in an extra tab when you launch them.', settings.autoExternalLaunch)}
+        <div id="externalLaunchModeRow" class="settings-animated-row" style="display: ${settings.autoExternalLaunch ? 'block' : 'none'};">
+          ${segmentRow('autoLaunchMode', 'Launch Mode', 'Choose how the automatic external tab is created.', [
+            { value: 'aboutBlank', label: 'About:Blank' },
+            { value: 'blob', label: 'Blob' }
+          ])}
+        </div>
+        ${toggleRow('autoLaunchOnLoad', 'Voltra Incognito', 'Launch Voltra in an about:blank tab.', settings.autoLaunchOnLoad)}
         <div class="settings-note">
-          Auto launch and cloaking preferences are saved in your browser and restore when you return later.
+          All settings are locally saved unless instructed otherwise.
         </div>
       `);
 
@@ -1021,6 +1053,27 @@
           </div>
         </div>
         <button type="button" class="settings-reset" onclick="resetSettings()">Reset All Settings</button>
+        <div class="settings-note">
+          All settings are locally saved unless instructed otherwise.
+        </div>
+      `);
+
+      const accountPanel = panel('account', 'Account', 'Manage password protection and account settings.', `
+        ${toggleRow('requirePassword', 'Require Password', 'Ask for a password before accessing the website.', settings.requirePassword)}
+        ${textRow('websitePassword', 'Website Password', 'Set a password to protect access to Voltra. Leave blank to disable.', 'Enter password...')}
+        ${textRow('bypassKeybind', 'Bypass Keybind', 'Hold Shift + this key to bypass password if forgotten. Leave blank to disable.', 'e.g. V')}
+        ${textRow('username', 'Username', 'Set your display name for personalization.', 'Enter username...')}
+        ${toggleRow('autoLock', 'Auto-Lock', 'Automatically lock the website after inactivity.', settings.autoLock)}
+        ${selectRow('autoLockTime', 'Auto-Lock Timer', 'Time before auto-lock activates.', [
+          { value: '5', label: '5 minutes' },
+          { value: '15', label: '15 minutes' },
+          { value: '30', label: '30 minutes' },
+          { value: '60', label: '1 hour' }
+        ])}
+        <button type="button" class="settings-reset" onclick="wipeAllData()" style="margin-top: 16px;">Wipe All Saved Data</button>
+        <div class="settings-note">
+          All settings are locally saved unless instructed otherwise.
+        </div>
       `);
 
       return `
@@ -1036,6 +1089,7 @@
                 ${navItem('motion', 'Motion', 'Animation')}
                 ${navItem('interface', 'Interface', 'Layout')}
                 ${navItem('cloaking', 'Cloaking', 'Tab & launch')}
+                ${navItem('account', 'Account', 'Password & security')}
                 ${navItem('system', 'System', 'About & reset')}
               </nav>
               <div class="settings-panels">
@@ -1044,6 +1098,7 @@
                 ${motionPanel}
                 ${interfacePanel}
                 ${cloakingPanel}
+                ${accountPanel}
                 ${systemPanel}
               </div>
             </div>
@@ -1088,6 +1143,9 @@
       setActiveNav(section);
       attachHoverSFX();
       updateTabCloakState();
+      if (section === 'settings') {
+        updateLaunchModeVisibility();
+      }
       requestAnimationFrame(syncLayout);
     }
 
@@ -1344,6 +1402,21 @@
         updateMuteIcon(muted);
       }
 
+      if (id === 'autoExternalLaunch' || id === 'autoLaunchOnLoad') {
+        updateLaunchModeVisibility();
+      }
+
+      if (id === 'autoLaunchOnLoad' && val === true) {
+        const testPopup = window.open('', '_blank');
+        if (!testPopup || testPopup.closed || typeof testPopup.closed == 'undefined') {
+          alert('Please allow popups for this website to use Voltra Incognito. The about:blank tab will be blocked otherwise. Reload the page after enabling popups.');
+        } else {
+          testPopup.close();
+          alert('Popups are now enabled. Reloading page...');
+          setTimeout(() => location.reload(), 1000);
+        }
+      }
+
       saveStoredSettings();
       applySettings();
     }
@@ -1389,6 +1462,19 @@
       render('settings');
     }
 
+    function wipeAllData() {
+      if (confirm('Are you sure you want to wipe all saved data? This will reset everything as if you joined the website for the first time.')) {
+        try {
+          localStorage.clear();
+          sessionStorage.clear();
+          location.reload();
+        } catch (err) {
+          console.warn('Could not wipe all data.', err);
+          alert('Could not wipe all data. Please try again.');
+        }
+      }
+    }
+
     function attachHoverSFX() {
       document.querySelectorAll('.game-card, .info-panel, .info-feature, .settings-reset, .settings-nav-item, .home-search-item, .suggestion-card, .icon-btn, .proxy-open-btn').forEach(el => {
         if (!el.dataset.sfx) {
@@ -1432,4 +1518,118 @@
     });
 
     applySettings();
+
+    function updateLaunchModeVisibility() {
+      const externalLaunchModeRow = document.getElementById('externalLaunchModeRow');
+      
+      if (externalLaunchModeRow) {
+        const isVisible = settings.autoExternalLaunch;
+        if (isVisible) {
+          externalLaunchModeRow.style.display = 'block';
+          externalLaunchModeRow.style.opacity = '0';
+          externalLaunchModeRow.style.transform = 'translateY(-10px)';
+          requestAnimationFrame(() => {
+            externalLaunchModeRow.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            externalLaunchModeRow.style.opacity = '1';
+            externalLaunchModeRow.style.transform = 'translateY(0)';
+          });
+        } else {
+          externalLaunchModeRow.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+          externalLaunchModeRow.style.opacity = '0';
+          externalLaunchModeRow.style.transform = 'translateY(-10px)';
+          setTimeout(() => {
+            if (!settings.autoExternalLaunch) {
+              externalLaunchModeRow.style.display = 'none';
+            }
+          }, 200);
+        }
+      }
+    }
+
+    function handleAutoLaunchOnLoad() {
+      if (settings.autoLaunchOnLoad) {
+        const currentUrl = window.location.href;
+        const newTab = window.open('about:blank', '_blank');
+        if (newTab) {
+          newTab.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Voltra Proxy</title>
+              <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                html, body { width: 100%; height: 100%; overflow: hidden; }
+                iframe { width: 100%; height: 100%; border: none; display: block; }
+              </style>
+            </head>
+            <body>
+              <iframe src="${currentUrl}" allowfullscreen></iframe>
+            </body>
+            </html>
+          `);
+          newTab.document.close();
+          window.location.href = 'https://www.google.com';
+        }
+      }
+    }
+
+    handleAutoLaunchOnLoad();
+
+    function checkPasswordProtection() {
+      if (settings.requirePassword && settings.websitePassword) {
+        const passwordOverlay = document.getElementById('passwordOverlay');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        
+        passwordOverlay.style.display = 'flex';
+        passwordInput.value = '';
+        passwordError.classList.remove('show');
+        passwordInput.focus();
+        
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function submitPassword() {
+      const passwordInput = document.getElementById('passwordInput');
+      const passwordError = document.getElementById('passwordError');
+      const passwordOverlay = document.getElementById('passwordOverlay');
+      
+      if (passwordInput.value === settings.websitePassword) {
+        passwordOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+      } else {
+        passwordError.classList.add('show');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (settings.requirePassword && settings.websitePassword && settings.bypassKeybind) {
+        const passwordOverlay = document.getElementById('passwordOverlay');
+        if (passwordOverlay && passwordOverlay.style.display === 'flex') {
+          if (e.shiftKey && e.key.toUpperCase() === settings.bypassKeybind.toUpperCase()) {
+            passwordOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+          }
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const passwordInput = document.getElementById('passwordInput');
+      if (passwordInput) {
+        passwordInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            submitPassword();
+          }
+        });
+      }
+    });
+
+    window.submitPassword = submitPassword;
+    window.checkPasswordProtection = checkPasswordProtection;
+
+    checkPasswordProtection();
   
