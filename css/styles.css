@@ -262,26 +262,65 @@
     .hero {
       position: relative;
       z-index: 2;
+      overflow: visible;
       min-height: calc(100vh - var(--nav-height));
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 120px 20px 80px;
+      padding: 80px 20px 120px;
     }
 
     .hero h1 {
       display: inline-block;
       font-size: clamp(3rem, 9vw, 7rem);
       font-weight: 800;
-      line-height: 1;
+      /* slightly increased line-height to avoid descender clipping */
+      line-height: 1.06;
       letter-spacing: -0.05em;
-      max-width: 900px;
+      max-width: none;
       background: linear-gradient(180deg, white, rgba(255,255,255,0.55));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: fadeUp 1s ease;
+      white-space: nowrap;
+      overflow: visible;
+      padding-bottom: 0.06em;
+    }
+
+    .typed-text {
+      display: inline-block;
+      white-space: nowrap;
+      vertical-align: baseline;
+    }
+
+    .username-highlight {
+      color: rgb(var(--accent-a));
+      text-shadow: 0 0 10px rgba(var(--accent-a), 0.6), 0 0 18px rgba(var(--accent-b), 0.28);
+      -webkit-text-fill-color: unset;
+    }
+
+    .hero h1 .typed-text {
+      display: inline-block;
+      vertical-align: baseline;
+    }
+
+    .hero h1 .typing-caret {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      margin-left: 8px;
+      vertical-align: baseline;
+      background: rgb(var(--accent-a));
+      box-shadow: 0 0 8px rgba(var(--accent-a), 0.8), 0 0 18px rgba(var(--accent-b), 0.45);
+      animation: blink-caret 1s steps(2, end) infinite;
+      border-radius: 1px;
+    }
+
+    @keyframes blink-caret {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
 
     .hero p {
@@ -304,8 +343,7 @@
     }
 
     .hero-search-stack:has(.hero-search:hover),
-    .hero-search-stack:has(.hero-search:focus-within),
-    .hero-search-stack.searching {
+    .hero-search-stack:has(.hero-search:focus-within) {
       width: var(--hero-search-expanded-width);
     }
 

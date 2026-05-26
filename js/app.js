@@ -26,7 +26,10 @@
       primer.volume = 0;
       primer.play().catch(() => {});
       intro.classList.add('exit');
-      setTimeout(() => intro.remove(), 700);
+      setTimeout(() => {
+        intro.remove();
+        typeCyclingText();
+      }, 700);
     }
 
     intro.addEventListener('click', startExperience);
@@ -97,6 +100,7 @@
     function syncLayout() {
       const nav = document.querySelector('.navbar');
       const heroTitle = document.querySelector('.hero h1');
+      const heroDescription = document.querySelector('.hero p');
       const heroSearch = document.querySelector('.hero-search-stack');
 
       if (nav) {
@@ -105,26 +109,37 @@
 
       if (heroTitle && heroSearch) {
         const titleWidth = Math.ceil(heroTitle.getBoundingClientRect().width);
+        const descWidth = heroDescription ? Math.ceil(heroDescription.getBoundingClientRect().width) : 0;
 
-        if (titleWidth > 0) {
+        // Only compute search width once on first initialization, never recalculate
+        if (!heroSearchWidthInitialized && titleWidth > 0) {
           const compact = window.innerWidth < 420;
           const initialCap = window.innerWidth - (compact ? 24 : 80);
           const expandedCap = window.innerWidth - (compact ? 12 : 40);
-          const minInitial = Math.min(310, initialCap);
-          const initialWidth = Math.min(Math.max(titleWidth, minInitial), initialCap);
-          const expandedTarget = Math.max(initialWidth + (compact ? 48 : 150), titleWidth + (compact ? 58 : 180));
+          const minInitial = Math.min(500, initialCap);
+          const baseWidth = Math.max(titleWidth + 120, descWidth + 40, minInitial);
+          const initialWidth = Math.min(Math.max(baseWidth, minInitial), initialCap);
+          const expandedTarget = Math.max(initialWidth + (compact ? 48 : 150), descWidth + (compact ? 20 : 80));
           const expandedWidth = Math.min(expandedTarget, expandedCap);
 
-          heroSearch.style.setProperty('--hero-search-width', `${Math.round(initialWidth)}px`);
-          heroSearch.style.setProperty('--hero-search-expanded-width', `${Math.round(Math.max(initialWidth, expandedWidth))}px`);
+          const newInitial = `${Math.round(initialWidth)}px`;
+          const newExpanded = `${Math.round(Math.max(initialWidth, expandedWidth))}px`;
+
+          heroSearch.style.setProperty('--hero-search-width', newInitial);
+          heroSearch.style.setProperty('--hero-search-expanded-width', newExpanded);
+          heroSearchWidthInitialized = true;
         }
       }
     }
 
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      syncLayout();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        syncLayout();
+      }, 150);
     });
 
     window.addEventListener('load', syncLayout);
@@ -384,6 +399,586 @@
     const settings = { ...defaultSettings };
     let settingsPanel = 'audio';
 
+    const cyclingPhrases = [
+      "Welcome, username.",
+      "Play Anything.",
+      "Welcome to Voltra.",
+      "Your gaming hub.",
+      "Unblocked games await.",
+      "Proxies at your fingertips.",
+      "Tools for everything.",
+      "Ready to play?",
+      "Let's get started.",
+      "Infinite possibilities.",
+      "Your escape begins here.",
+      "No limits, just fun.",
+      "Browse freely.",
+      "Access everything.",
+      "Your playground awaits.",
+      "Gaming redefined.",
+      "The future of browsing.",
+      "Your digital sanctuary.",
+      "Unlock the web.",
+      "Freedom to play.",
+      "Your portal to fun.",
+      "Where gaming lives.",
+      "Your daily dose of fun.",
+      "Entertainment unleashed.",
+      "Your gaming companion.",
+      "Play without limits.",
+      "Your web oasis.",
+      "Discover, play, enjoy.",
+      "Your gaming destination.",
+      "Fun awaits you.",
+      "Your escape from boredom.",
+      "Gaming made simple.",
+      "Your personal arcade.",
+      "Unlimited entertainment.",
+      "Your web playground.",
+      "Play, explore, repeat.",
+      "Your gaming universe.",
+      "Fun is just a click away.",
+      "Your digital playground.",
+      "Gaming without boundaries.",
+      "Your entertainment hub.",
+      "Where fun begins.",
+      "Change your theme in Settings.",
+      "Use the cog to customize audio and motion.",
+      "Open games in a new tab from the cards.",
+      "Adjust particles and glow from the Appearance panel.",
+      "Find games, tools, and apps faster with search.",
+      "Need help? Check Settings for advanced controls.",
+      "Use the sidebar to switch between Games, Proxies, Tools, and Info.",
+      "Save time with quick access cards and hidden features.",
+      "Keep Voltra bookmarked for instant return.",
+      "Your gaming sanctuary.",
+      "Play freely.",
+      "Your web escape.",
+      "Gaming paradise.",
+      "Your fun zone.",
+      "Unblock your potential.",
+      "Your gaming world.",
+      "Entertainment at your fingertips.",
+      "Your daily gaming fix.",
+      "Play without restrictions.",
+      "Your web gaming hub.",
+      "Fun for everyone.",
+      "Your gaming portal.",
+      "Unlimited gaming.",
+      "Your entertainment center.",
+      "Where gamers gather.",
+      "Your fun destination.",
+      "Gaming without limits.",
+      "Your web gaming world.",
+      "Play anytime, anywhere.",
+      "Your gaming escape.",
+      "Entertainment unlimited.",
+      "Your gaming oasis.",
+      "Discover new games.",
+      "Your gaming adventure.",
+      "Play with freedom.",
+      "Your web gaming paradise.",
+      "Fun without boundaries.",
+      "Your gaming haven.",
+      "Unlock entertainment.",
+      "Your gaming realm.",
+      "Play your way.",
+      "Your gaming universe awaits.",
+      "Entertainment redefined.",
+      "Your gaming journey.",
+      "Play without worries.",
+      "Your web gaming sanctuary.",
+      "Fun for all.",
+      "Your gaming experience.",
+      "Unblock the fun.",
+      "Your gaming destination awaits.",
+      "Play with confidence.",
+      "Your web gaming zone.",
+      "Entertainment at its best.",
+      "Your gaming paradise awaits.",
+      "Discover endless fun.",
+      "Your gaming adventure awaits.",
+      "Play without fear.",
+      "Your web gaming haven.",
+      "Fun without limits.",
+      "Your gaming world awaits.",
+      "Unlock the gaming world.",
+      "Your gaming escape awaits.",
+      "Play with passion.",
+      "Your web gaming destination.",
+      "Entertainment for everyone.",
+      "Your gaming journey awaits.",
+      "Play without compromise.",
+      "Your web gaming paradise awaits.",
+      "Fun without restrictions.",
+      "Your gaming haven awaits.",
+      "Discover your gaming potential.",
+      "Your gaming realm awaits.",
+      "Play with style.",
+      "Your web gaming world awaits.",
+      "Entertainment without boundaries.",
+      "Your gaming sanctuary awaits.",
+      "Play with joy.",
+      "Your web gaming escape awaits.",
+      "Fun without compromise.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming world.",
+      "Your gaming destination awaits.",
+      "Play with excitement.",
+      "Your web gaming haven awaits.",
+      "Entertainment without limits.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming world.",
+      "Your gaming adventure awaits.",
+      "Play with enthusiasm.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without fear.",
+      "Your gaming world awaits.",
+      "Unlock your gaming paradise.",
+      "Your gaming escape awaits.",
+      "Play with energy.",
+      "Your web gaming destination awaits.",
+      "Entertainment without compromise.",
+      "Your gaming journey awaits.",
+      "Play with creativity.",
+      "Your web gaming paradise awaits.",
+      "Fun without boundaries.",
+      "Your gaming haven awaits.",
+      "Discover your gaming sanctuary.",
+      "Your gaming realm awaits.",
+      "Play with imagination.",
+      "Your web gaming world awaits.",
+      "Entertainment without fear.",
+      "Your gaming sanctuary awaits.",
+      "Play with inspiration.",
+      "Your web gaming escape awaits.",
+      "Fun without hesitation.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming haven.",
+      "Your gaming destination awaits.",
+      "Play with determination.",
+      "Your web gaming haven awaits.",
+      "Entertainment without hesitation.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming haven.",
+      "Your gaming adventure awaits.",
+      "Play with confidence.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without doubt.",
+      "Your gaming world awaits.",
+      "Unlock your gaming sanctuary.",
+      "Your gaming escape awaits.",
+      "Play with courage.",
+      "Your web gaming destination awaits.",
+      "Entertainment without doubt.",
+      "Your gaming journey awaits.",
+      "Play with strength.",
+      "Your web gaming paradise awaits.",
+      "Fun without worry.",
+      "Your gaming haven awaits.",
+      "Discover your gaming zone.",
+      "Your gaming realm awaits.",
+      "Play with power.",
+      "Your web gaming world awaits.",
+      "Entertainment without worry.",
+      "Your gaming sanctuary awaits.",
+      "Play with grace.",
+      "Your web gaming escape awaits.",
+      "Fun without stress.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming zone.",
+      "Your gaming destination awaits.",
+      "Play with elegance.",
+      "Your web gaming haven awaits.",
+      "Entertainment without stress.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming destination.",
+      "Your gaming adventure awaits.",
+      "Play with flair.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without pressure.",
+      "Your gaming world awaits.",
+      "Unlock your gaming destination.",
+      "Your gaming escape awaits.",
+      "Play with charm.",
+      "Your web gaming destination awaits.",
+      "Entertainment without pressure.",
+      "Your gaming journey awaits.",
+      "Play with wit.",
+      "Your web gaming paradise awaits.",
+      "Fun without anxiety.",
+      "Your gaming haven awaits.",
+      "Discover your gaming journey.",
+      "Your gaming realm awaits.",
+      "Play with humor.",
+      "Your web gaming world awaits.",
+      "Entertainment without anxiety.",
+      "Your gaming sanctuary awaits.",
+      "Play with intelligence.",
+      "Your web gaming escape awaits.",
+      "Fun without frustration.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming journey.",
+      "Your gaming destination awaits.",
+      "Play with wisdom.",
+      "Your web gaming haven awaits.",
+      "Entertainment without frustration.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming wisdom.",
+      "Your gaming adventure awaits.",
+      "Play with knowledge.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without confusion.",
+      "Your gaming world awaits.",
+      "Unlock your gaming wisdom.",
+      "Your gaming escape awaits.",
+      "Play with understanding.",
+      "Your web gaming destination awaits.",
+      "Entertainment without confusion.",
+      "Your gaming journey awaits.",
+      "Play with insight.",
+      "Your web gaming paradise awaits.",
+      "Fun without uncertainty.",
+      "Your gaming haven awaits.",
+      "Discover your gaming insight.",
+      "Your gaming realm awaits.",
+      "Play with vision.",
+      "Your web gaming world awaits.",
+      "Entertainment without uncertainty.",
+      "Your gaming sanctuary awaits.",
+      "Play with foresight.",
+      "Your web gaming escape awaits.",
+      "Fun without ambiguity.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming insight.",
+      "Your gaming destination awaits.",
+      "Play with clarity.",
+      "Your web gaming haven awaits.",
+      "Entertainment without ambiguity.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming clarity.",
+      "Your gaming adventure awaits.",
+      "Play with focus.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without distraction.",
+      "Your gaming world awaits.",
+      "Unlock your gaming clarity.",
+      "Your gaming escape awaits.",
+      "Play with precision.",
+      "Your web gaming destination awaits.",
+      "Entertainment without distraction.",
+      "Your gaming journey awaits.",
+      "Play with accuracy.",
+      "Your web gaming paradise awaits.",
+      "Fun without error.",
+      "Your gaming haven awaits.",
+      "Discover your gaming precision.",
+      "Your gaming realm awaits.",
+      "Play with perfection.",
+      "Your web gaming world awaits.",
+      "Entertainment without error.",
+      "Your gaming sanctuary awaits.",
+      "Play with excellence.",
+      "Your web gaming escape awaits.",
+      "Fun without flaw.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming precision.",
+      "Your gaming destination awaits.",
+      "Play with mastery.",
+      "Your web gaming haven awaits.",
+      "Entertainment without flaw.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming mastery.",
+      "Your gaming adventure awaits.",
+      "Play with expertise.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without mistake.",
+      "Your gaming world awaits.",
+      "Unlock your gaming mastery.",
+      "Your gaming escape awaits.",
+      "Play with skill.",
+      "Your web gaming destination awaits.",
+      "Entertainment without mistake.",
+      "Your gaming journey awaits.",
+      "Play with talent.",
+      "Your web gaming paradise awaits.",
+      "Fun without failure.",
+      "Your gaming haven awaits.",
+      "Discover your gaming talent.",
+      "Your gaming realm awaits.",
+      "Play with ability.",
+      "Your web gaming world awaits.",
+      "Entertainment without failure.",
+      "Your gaming sanctuary awaits.",
+      "Play with capability.",
+      "Your web gaming escape awaits.",
+      "Fun without weakness.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming talent.",
+      "Your gaming destination awaits.",
+      "Play with competence.",
+      "Your web gaming haven awaits.",
+      "Entertainment without weakness.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming competence.",
+      "Your gaming adventure awaits.",
+      "Play with proficiency.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without limitation.",
+      "Your gaming world awaits.",
+      "Unlock your gaming competence.",
+      "Your gaming escape awaits.",
+      "Play with aptitude.",
+      "Your web gaming destination awaits.",
+      "Entertainment without limitation.",
+      "Your gaming journey awaits.",
+      "Play with capacity.",
+      "Your web gaming paradise awaits.",
+      "Fun without restriction.",
+      "Your gaming haven awaits.",
+      "Discover your gaming aptitude.",
+      "Your gaming realm awaits.",
+      "Play with potential.",
+      "Your web gaming world awaits.",
+      "Entertainment without restriction.",
+      "Your gaming sanctuary awaits.",
+      "Play with possibility.",
+      "Your web gaming escape awaits.",
+      "Fun without constraint.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming potential.",
+      "Your gaming destination awaits.",
+      "Play with opportunity.",
+      "Your web gaming haven awaits.",
+      "Entertainment without constraint.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming opportunity.",
+      "Your gaming adventure awaits.",
+      "Play with prospect.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without barrier.",
+      "Your gaming world awaits.",
+      "Unlock your gaming opportunity.",
+      "Your gaming escape awaits.",
+      "Play with promise.",
+      "Your web gaming destination awaits.",
+      "Entertainment without barrier.",
+      "Your gaming journey awaits.",
+      "Play with hope.",
+      "Your web gaming paradise awaits.",
+      "Fun without obstacle.",
+      "Your gaming haven awaits.",
+      "Discover your gaming promise.",
+      "Your gaming realm awaits.",
+      "Play with aspiration.",
+      "Your web gaming world awaits.",
+      "Entertainment without obstacle.",
+      "Your gaming sanctuary awaits.",
+      "Play with ambition.",
+      "Your web gaming escape awaits.",
+      "Fun without hindrance.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming promise.",
+      "Your gaming destination awaits.",
+      "Play with dream.",
+      "Your web gaming haven awaits.",
+      "Entertainment without hindrance.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming dream.",
+      "Your gaming adventure awaits.",
+      "Play with vision.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without impediment.",
+      "Your gaming world awaits.",
+      "Unlock your gaming dream.",
+      "Your gaming escape awaits.",
+      "Play with goal.",
+      "Your web gaming destination awaits.",
+      "Entertainment without impediment.",
+      "Your gaming journey awaits.",
+      "Play with target.",
+      "Your web gaming paradise awaits.",
+      "Fun without delay.",
+      "Your gaming haven awaits.",
+      "Discover your gaming goal.",
+      "Your gaming realm awaits.",
+      "Play with objective.",
+      "Your web gaming world awaits.",
+      "Entertainment without delay.",
+      "Your gaming sanctuary awaits.",
+      "Play with purpose.",
+      "Your web gaming escape awaits.",
+      "Fun without pause.",
+      "Your gaming zone awaits.",
+      "Unlock your gaming goal.",
+      "Your gaming destination awaits.",
+      "Play with mission.",
+      "Your web gaming haven awaits.",
+      "Entertainment without pause.",
+      "Your gaming paradise awaits.",
+      "Discover your gaming mission.",
+      "Your gaming adventure awaits.",
+      "Play with calling.",
+      "Your web gaming sanctuary awaits.",
+      "Fun without interruption.",
+      "Your gaming world awaits.",
+      "Unlock your gaming mission.",
+      "Your gaming escape awaits.",
+      "Play with destiny.",
+      "Your web gaming destination awaits.",
+      "Entertainment without interruption.",
+      "Your gaming journey awaits.",
+      "Play with fate.",
+      "Your web gaming paradise awaits.",
+      "Fun without break.",
+      "Your gaming haven awaits.",
+      "Discover your gaming destiny.",
+      "Your gaming realm awaits."
+    ];
+
+    let currentPhraseIndex = undefined;
+    let currentText = '';
+    let isDeleting = false;
+    // base typing speeds (ms) — tuned slightly slower for readability
+    let baseTypingDelay = 85; // normal/quick typing (slightly slower)
+    let baseDeletingDelay = 40;
+    let pauseAfterTyping = 4200; // rest on full phrase longer
+    let pauseAfterDeleting = 700;
+
+    let phraseQueue = [];
+    let recentPhraseHistory = [];
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function buildPhraseQueue() {
+      phraseQueue = cyclingPhrases
+        .map((_, idx) => idx)
+        .filter(idx => settings.username || !/username/i.test(cyclingPhrases[idx]));
+      shuffleArray(phraseQueue);
+
+      if (settings.username) {
+        const usernameIndex = cyclingPhrases.findIndex(p => /username/i.test(p));
+        if (usernameIndex !== -1) {
+          const pos = phraseQueue.indexOf(usernameIndex);
+          if (pos > -1) phraseQueue.splice(pos, 1);
+          phraseQueue.unshift(usernameIndex);
+        }
+      }
+
+      const avoidIndexes = [...recentPhraseHistory].slice(-4);
+      for (let i = 0; i < Math.min(3, phraseQueue.length); i++) {
+        if (avoidIndexes.includes(phraseQueue[i])) {
+          const avoid = phraseQueue.splice(i, 1)[0];
+          phraseQueue.push(avoid);
+          i--; // recheck the current position after rotation
+        }
+      }
+    }
+
+    function getNextPhraseIndex() {
+      if (!phraseQueue.length) buildPhraseQueue();
+      let nextIndex = phraseQueue.shift();
+      if (nextIndex === undefined) return 0;
+      if (!settings.username && /username/i.test(cyclingPhrases[nextIndex])) {
+        return getNextPhraseIndex();
+      }
+      recentPhraseHistory.push(nextIndex);
+      if (recentPhraseHistory.length > 6) recentPhraseHistory.shift();
+      return nextIndex;
+    }
+
+    function typeCyclingText() {
+      const heroTitle = document.querySelector('.hero h1');
+      if (!heroTitle) return;
+
+      if (currentPhraseIndex === undefined) {
+        currentPhraseIndex = getNextPhraseIndex();
+      }
+
+      const fullPhrase = cyclingPhrases[currentPhraseIndex] || '';
+
+      // Handle phrases that include the token 'username' specially so typed/deleted
+      // characters don't corrupt HTML and the username is always colored.
+      const hasUsernameToken = /username/i.test(fullPhrase) && settings.username;
+      let delay = baseTypingDelay;
+
+      if (hasUsernameToken) {
+        const tokenIndex = fullPhrase.toLowerCase().indexOf('username');
+        const pre = fullPhrase.slice(0, tokenIndex);
+        const post = fullPhrase.slice(tokenIndex + 8);
+        const userVal = String(settings.username || '');
+        const replacedFull = pre + userVal + post;
+
+        // compute next length
+        let nextLen = currentText.length;
+        if (isDeleting) {
+          nextLen = Math.max(0, nextLen - 1);
+          delay = baseDeletingDelay;
+        } else {
+          nextLen = Math.min(replacedFull.length, nextLen + 1);
+          delay = baseTypingDelay;
+        }
+
+        currentText = replacedFull.substring(0, nextLen);
+
+        // build display with colored username without breaking HTML while typing
+        let displayText = '';
+        if (nextLen <= pre.length) {
+          displayText = escapeHTML(replacedFull.slice(0, nextLen));
+        } else if (nextLen <= pre.length + userVal.length) {
+          const partBefore = escapeHTML(pre);
+          const userPart = escapeHTML(userVal.slice(0, nextLen - pre.length));
+          displayText = `${partBefore}<span class="username-highlight">${userPart}</span>`;
+        } else {
+          const partBefore = escapeHTML(pre);
+          const userPart = escapeHTML(userVal);
+          const partAfter = escapeHTML(post.slice(0, nextLen - pre.length - userVal.length));
+          displayText = `${partBefore}<span class="username-highlight">${userPart}</span>${partAfter}`;
+        }
+
+        heroTitle.innerHTML = `<span class="typed-text">${displayText}</span><span class="typing-caret" aria-hidden="true"></span>`;
+
+        if (!isDeleting && nextLen === replacedFull.length) {
+          isDeleting = true;
+          delay = pauseAfterTyping;
+        } else if (isDeleting && nextLen === 0) {
+          isDeleting = false;
+          currentPhraseIndex = getNextPhraseIndex();
+          delay = pauseAfterDeleting;
+        }
+      } else {
+        // normal phrase (no username token)
+        let nextLen = currentText.length;
+        if (isDeleting) {
+          nextLen = Math.max(0, nextLen - 1);
+          delay = baseDeletingDelay;
+        } else {
+          nextLen = Math.min(fullPhrase.length, nextLen + 1);
+          delay = baseTypingDelay;
+        }
+
+        currentText = fullPhrase.substring(0, nextLen);
+        const displayText = escapeHTML(currentText);
+        heroTitle.innerHTML = `<span class="typed-text">${displayText}</span><span class="typing-caret" aria-hidden="true"></span>`;
+
+        if (!isDeleting && nextLen === fullPhrase.length) {
+          isDeleting = true;
+          delay = pauseAfterTyping;
+        } else if (isDeleting && nextLen === 0) {
+          isDeleting = false;
+          currentPhraseIndex = getNextPhraseIndex();
+          delay = pauseAfterDeleting;
+        }
+      }
+
+      setTimeout(typeCyclingText, delay);
+    }
+
     const cloakPresets = {
       google: { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
       classroom: { title: 'Google Classroom', icon: 'https://ssl.gstatic.com/classroom/favicon.png' },
@@ -535,6 +1130,7 @@
     let currentSection = null;
     let returnSection = 'games';
     let lastBrowseQuery = '';
+    let heroSearchWidthInitialized = false;
 
     function scrollBehavior() {
       return settings.smoothScroll ? 'smooth' : 'auto';
@@ -1036,7 +1632,7 @@
             { value: 'blob', label: 'Blob' }
           ])}
         </div>
-        ${toggleRow('autoLaunchOnLoad', 'Voltra Incognito', 'Launch Voltra in an about:blank tab.', settings.autoLaunchOnLoad)}
+        ${toggleRow('autoLaunchOnLoad', 'Voltra Incognito', 'Auto-launch Voltra in an about:blank tab every time you visit.', settings.autoLaunchOnLoad)}
         <div class="settings-note">
           All settings are locally saved unless instructed otherwise.
         </div>
@@ -1122,6 +1718,7 @@
 
     function render(section, query = '') {
       currentSection = section;
+      if (section !== null) heroSearchWidthInitialized = false;
       if (section === 'games' || section === 'proxies' || section === 'tools') {
         lastBrowseQuery = query;
       }
@@ -1246,7 +1843,6 @@
 
     function clearHomeSearch() {
       homeSearchInput.value = '';
-      homeSearchStack.classList.remove('searching');
       homeSearchResults.classList.remove('active');
       homeSearchResults.innerHTML = '';
     }
@@ -1270,7 +1866,7 @@
         return { section, label: page.label, matches };
       }).filter(group => group.matches.length > 0);
 
-      homeSearchStack.classList.add('searching');
+      // Do not toggle `searching` class programmatically — keep expansion tied to hover/focus-only.
       homeSearchResults.classList.add('active');
 
       if (!groups.length) {
@@ -1352,7 +1948,7 @@
       clearHomeSearch();
       updateTabCloakState();
       window.scrollTo({ top: 0, behavior: scrollBehavior() });
-      requestAnimationFrame(syncLayout);
+      // Avoid forcing a layout recalculation here — syncLayout runs on resize/fonts ready.
     }
 
     function applySettings() {
