@@ -271,6 +271,195 @@
           emoji: "🍉",
           image: fruitNinjaIcon,
           url: fruitNinjaUrl
+        },
+        {
+          id: "1v1-lol",
+          title: "1v1.lol",
+          desc: "Build, shoot, and outplay opponents in fast 1v1 build battles. Master editing, aim, and strategy in this competitive shooter.",
+          badge: "SHOOTER",
+          emoji: "🔫",
+          image: "https://outred.org/g/assets/1v1lol/splash.png",
+          url: "https://googleusercontent.b-cdn.net/one/oneup.html"
+        },
+        {
+          id: "duck-life-2",
+          title: "Duck Life 2",
+          desc: "Train your duck in running, swimming, flying, and climbing across new courses. Compete in tournaments and unlock abilities.",
+          badge: "ADVENTURE",
+          emoji: "🦆",
+          image: "https://outred.org/g/assets/ducklife2/ducklife2.png",
+          url: "https://script.google.com/macros/s/AKfycbxt1OfesayrpvZO0iyVbq-_DJAgydK1MtfKUflXEkxk8MUHBuV_GIo81yIQoNNiUAzbUA/exec"
+        },
+        {
+          id: "duck-life-3",
+          title: "Duck Life 3",
+          desc: "Evolve your duck through generations with new skills, habitats, and challenges. Breed, train, and race to create the ultimate duck.",
+          badge: "ADVENTURE",
+          emoji: "🥚",
+          image: "https://outred.org/g/assets/ducklife3/duck.png",
+          url: "https://script.google.com/macros/s/AKfycbxKC46TPtFqkQ8CyDyHSxOxthdFPI4de6mTUDZsmdXhUjxictSPiOGP0NEREVNrOH8P/exec"
+        },
+        {
+          id: "duck-life-4",
+          title: "Duck Life 4",
+          desc: "Explore a vast world with your duck team. Train multiple ducks, discover new areas, and compete in the ultimate duck championships.",
+          badge: "ADVENTURE",
+          emoji: "🏆",
+          image: "https://outred.org/g/assets/ducklife4/splash.jpg",
+          url: "https://script.google.com/macros/s/AKfycby2EtapHf3dWrR5iauSK_yeOo64MGUkkkxIbYCsQBrQN8rmxohGIAKF1U69foTGQsoj/exec"
+        },
+        {
+          id: "motox3m",
+          title: "Moto X3M",
+          desc: "Race through challenging obstacle courses on a motorcycle. Perform stunts, avoid traps, and beat the clock in this physics-based racer.",
+          badge: "RACING",
+          emoji: "🏍️",
+          image: "https://outred.org/g/assets/motox3m/splash.jpg",
+          url: "https://script.google.com/macros/s/AKfycbzv1h8PLdH7WouQ0T09hlcWifgJGTCYkrIKf1urYncfCcdm-F9sYZ4ex-U6Vp0tVHnI4g/exec"
+        },
+        {
+          id: "baldis-basics",
+          title: "Baldi's Basics",
+          desc: "Navigate a surreal schoolhouse while solving math problems and evading Baldi. A horror-education mashup with unsettling charm.",
+          badge: "HORROR",
+          emoji: "📏",
+          image: "https://outred.org/g/assets/baldis-basics/splash.png",
+          url: "data:text/html;base64,PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL3Jhd2Nkbi5naXRoYWNrLmNvbS91c2VybmFtZWd0aC9kaWFtb25kbWluZS9jZTNmMDE0ZDc0NjhkMjZlNTc4YTIzZGU3NzczZGRlYjRmNDBiMjRmL2dzL2dzZmlsZXMvYmFzaWNzL1RlbXBsYXRlRGF0YS9zdHlsZS5jc3MiPg0KPC9oZWFkPg0KPGJvZHk+DQo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9yYXdjZG4uZ2l0aGFjay5jb20vdXNlcm5hbWVndGgvZGlhbW9uZG1pbmUvY2UzZjAxNGQ3NDY4ZDI2ZTU3OGEyM2RlNzc3M2RkZWI0ZjQwYjI0Zi9ncy9nc2ZpbGVzL2Jhc2ljcy9UZW1wbGF0ZURhdGEvVW5pdHlQcm9ncmVzcy5qcyI+PC9zY3JpcHQ+DQogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vcmF3Y2RuLmdpdGhhY2suY29tL3VzZXJuYW1lZ3RoL2RpYW1vbmRtaW5lL2NlM2YwMTRkNzQ2OGQyNmU1NzhhMjNkZTc3NzNkZGViNGY0MGIyNGYvZ3MvZ3NmaWxlcy9iYXNpY3MvYmFsZGkuanMiPjwvc2NyaXB0Pg0KICAgIDxzY3JpcHQ+DQogICAgICB2YXIgZ2FtZUluc3RhbmNlID0gVW5pdHlMb2FkZXIuaW5zdGFudGlhdGUoImdhbWVDb250YWluZXIiLCAiaHR0cHM6Ly9yYXdjZG4uZ2l0aGFjay5jb20vdXNlcm5hbWVndGgvZGlhbW9uZG1pbmUvY2UzZjAxNGQ3NDY4ZDI2ZTU3OGEyM2RlNzc3M2RkZWI0ZjQwYjI0Zi9ncy9nc2ZpbGVzL2Jhc2ljcy9iYWxkaS5qc29uIiwge29uUHJvZ3Jlc3M6IFVuaXR5UHJvZ3Jlc3MsTW9kdWxlOntvblJ1bnRpbWVJbml0aWFsaXplZDogZnVuY3Rpb24oKSB7VW5pdHlQcm9ncmVzcyhnYW1lSW5zdGFuY2UsICJjb21wbGV0ZSIpfX19KTsNCiAgICA8L3NjcmlwdD4NCgk8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3N0Mzkvc2RrQG1haW4vYXBpLmpzIj48L3NjcmlwdD4NCiAgICA8ZGl2IGNsYXNzPSJ3ZWJnbC1jb250ZW50Ij4NCiAgICAgICAgPGRpdiBpZD0iZ2FtZUNvbnRhaW5lciIgc3R5bGU9IndpZHRoOiAxMDB2dzsgaGVpZ2h0OiAxMDB2aCI+PC9kaXY+DQogICAgICAgIDwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg=="
+        },
+        {
+          id: "backrooms",
+          title: "Backrooms",
+          desc: "Explore the endless liminal maze of yellow rooms. Avoid entities, find supplies, and uncover the mysteries of this eerie space.",
+          badge: "HORROR",
+          emoji: "🚪",
+          image: "https://outred.org/g/assets/backrooms/img/splash.jpg",
+          url: "https://storage.googleapis.com/classroomx/broom.html"
+        },
+        {
+          id: "papas-burgeria",
+          title: "Papa's Burgeria",
+          desc: "Run your own burger restaurant! Take orders, grill patties, add toppings, and serve hungry customers in this time management classic.",
+          badge: "SIMULATION",
+          emoji: "🍔",
+          image: "https://outred.org/g/assets/papasburgeria/splash.jpg",
+          url: "https://script.google.com/macros/s/AKfycbyyfjHc-YiNqGOngfUlkjS5Fvx2x0UYfkerogM_Y3-Z1BQTZW2K0AcegLUtVdRjo5nM/exec"
+        },
+        {
+          id: "papas-pizzeria",
+          title: "Papa's Pizzeria",
+          desc: "Build the perfect pizza from dough to delivery. Manage toppings, oven timing, and customer satisfaction in this culinary challenge.",
+          badge: "SIMULATION",
+          emoji: "🍕",
+          image: "https://outred.org/g/assets/papaspizzaria/papaspizzaria.jpg",
+          url: "https://script.google.com/macros/s/AKfycbxN6EVQbtkjn6NUiIyJscLGTyyMyAUABzuB_kp4relIe6rr9B8eWmlnlvDsBVtiRa5pPg/exec"
+        },
+        {
+          id: "ovo",
+          title: "OvO",
+          desc: "Slide, jump, and dash through minimalist platforming levels. Master precise movement and timing in this sleek speed-running challenge.",
+          badge: "PLATFORMER",
+          emoji: "🥚",
+          image: "https://outred.org/g/assets/ovo/ovo.png",
+          url: "https://script.google.com/macros/s/AKfycbyDZOJq86UIFlMkKfvZtA_Sv86sKooVRpwVFS2rb38TOT8ExCt3PfR1Y5UAveVuVGlQLw/exec"
+        },
+        {
+          id: "paper-io-2",
+          title: "Paper.io 2",
+          desc: "Expand your territory by drawing trails across the map. Outmaneuver opponents and claim the largest area in this strategic conquest game.",
+          badge: "STRATEGY",
+          emoji: "📄",
+          image: "https://outred.org/g/assets/paperio2/images/icon512.png",
+          url: "https://script.google.com/macros/s/AKfycbwNxCzUuQVmLRWTwYK2D4yTqpWg2O-qge8BwCkxhLmqWd1DtXynwJXPEDClPt7ERZr-/exec"
+        },
+        {
+          id: "blob-opera",
+          title: "Blob Opera",
+          desc: "Conduct a quartet of singing blobs in harmonious melodies. Drag to control pitch and create beautiful choral arrangements.",
+          badge: "MUSIC",
+          emoji: "🎭",
+          image: "https://blob-opera.com/wp-content/uploads/2025/10/Blob-Opera.webp",
+          url: "https://cilex-aeiopera.uc.r.appspot.com/#/"
+        },
+        {
+          id: "plants-vs-zombies",
+          title: "Plants vs Zombies",
+          desc: "Defend your lawn with an arsenal of plants against waves of zombies. Strategic tower defense meets quirky humor in this classic.",
+          badge: "STRATEGY",
+          emoji: "🌻",
+          image: "https://outred.org/g/assets/plants%20vs%20zombies%201/image_proxy.png",
+          url: "https://script.google.com/macros/s/AKfycby_ln3ql4aO56lxfeLUH_UziAcZvRzETmL9zqekK0neuz5OHISrr6getE8_-or9E_Tj/exec"
+        },
+        {
+          id: "retro-bowl",
+          title: "Retro Bowl",
+          desc: "Lead your football team to glory in this retro-style sports management game. Call plays, manage your roster, and win championships.",
+          badge: "SPORTS",
+          emoji: "🏈",
+          image: "https://outred.org/g/assets/retro-bowl/img/icon.jpg",
+          url: "https://amhooman.github.io/website/games/retrobowl/game.html"
+        },
+        {
+          id: "rooftop-snipers",
+          title: "Rooftop Snipers",
+          desc: "Duel on narrow rooftops in this physics-based sniper game. Knock your opponent off the edge with precise shots and environmental traps.",
+          badge: "SHOOTER",
+          emoji: "🎯",
+          image: "https://outred.org/g/assets/rooftop-snipers/img/preview.png",
+          url: "https://script.google.com/macros/s/AKfycbyoVKqSi44yCkcl01rp17c7Dluj_4Q9P5kSsqGcf02xgBTx_mT6jik17o2mhkGgd9Yj/exec"
+        },
+        {
+          id: "snowball-io",
+          title: "Snowball.io",
+          desc: "Roll snowballs to grow larger and knock opponents off the arena. A simple yet addictive multiplayer battle game.",
+          badge: "MULTIPLAYER",
+          emoji: "⛄",
+          image: "https://outred.org/g/assets/snowbattle/img/logo.png",
+          url: "https://script.google.com/macros/s/AKfycbxa3OjBw8KWer3YhEXl1wxoe1uQKNo-wgGuqPO3NTndX566TTs10-ioXopEPitTvE-B/exec"
+        },
+        {
+          id: "subway-surfers",
+          title: "Subway Surfers",
+          desc: "Run, jump, and surf through endless subway tracks. Dodge trains, collect coins, and unlock characters in this endless runner classic.",
+          badge: "RUNNER",
+          emoji: "🏃",
+          image: "https://outred.org/g/assets/subway-surfers/img/splash.jpg",
+          url: "https://gertdoro.github.io/3hg7dj3bnc82/index.html"
+        },
+        {
+          id: "super-mario-64",
+          title: "Super Mario 64",
+          desc: "Explore Princess Peach's castle and jump into painting worlds. Collect Power Stars in this groundbreaking 3D platforming adventure.",
+          badge: "CLASSIC",
+          emoji: "⭐",
+          image: "https://outred.org/g/assets/sm64/logo.png",
+          url: "https://script.google.com/macros/s/AKfycbyB8Cg09IyL5iA01VRMcp6GXWBsHJDyytzuovDyiHdgIUmtHuNM7x27VlBnJjYt26F-/exec"
+        },
+        {
+          id: "superhot",
+          title: "Superhot",
+          desc: "Time moves only when you move in this innovative shooter. Plan your every step and unleash stylish combat in slow-motion mayhem.",
+          badge: "SHOOTER",
+          emoji: "🔥",
+          image: "https://outred.org/g/assets/superhot/hot.jpg",
+          url: "https://mgalternative.github.io/d4b259d1-cd08-44ae-b2d2-fc3981b58fca/content/m.igroblox.ru/ngm/super-khot/index.html"
+        },
+        {
+          id: "temple-run-2",
+          title: "Temple Run 2",
+          desc: "Run for your life through ancient temples and cliffs. Slide, jump, and turn while being chased by demonic monkeys in this endless runner.",
+          badge: "RUNNER",
+          emoji: "🏃",
+          image: "https://outred.org/g/assets/temple-run-2/img/og-icon.png",
+          url: "https://emulatoros.github.io/html5-games/games/templerun2/"
+        },
+        {
+          id: "run-3",
+          title: "Run 3",
+          desc: "Run through endless tunnels in space, switching gravity and navigating gaps. A unique endless runner with mind-bending level design.",
+          badge: "RUNNER",
+          emoji: "🌌",
+          image: "https://run3gamefree.com/run-3.webp",
+          url: "https://lekug.github.io/tn6pS9dCf37xAhkJv/"
         }
       ],
       proxies: [
@@ -331,12 +520,7 @@
           embeddable: false
         }
       ],
-      tools: [
-        { title: "File Hub", desc: "Cloud file launcher.", badge: "NEW", emoji: "📁" },
-        { title: "Quick Notes", desc: "Simple scratchpad for browser sessions.", badge: "TOOLS", emoji: "📝" },
-        { title: "Tab Vault", desc: "Save and relaunch useful web destinations.", badge: "SAVE", emoji: "🧭" },
-        { title: "Link Cleaner", desc: "Trim messy links into cleaner shareable URLs.", badge: "UTILITY", emoji: "✨" }
-      ]
+      tools: []
     };
 
     const gameIndex = Object.fromEntries(sectionData.games.map(game => [game.id, game]));
